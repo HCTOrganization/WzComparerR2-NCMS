@@ -41,11 +41,11 @@ namespace WzComparerR2.CharaSimControl
         public static readonly Font ItemDetailFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
         public static readonly Font LevelBoldFont = new Font("SimSun", 12f, FontStyle.Bold, GraphicsUnit.Pixel);
         public static readonly Font JMSKunshoFont = new Font("MS PGothic", 12f, GraphicsUnit.Pixel);
-        public static readonly Font EquipDetailFont = new Font("SimSun", 11f, GraphicsUnit.Pixel);
-        public static readonly Font EpicGearDetailFont = new Font("SimSun", 11f, GraphicsUnit.Pixel);
+        public static readonly Font EquipDetailFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+        public static readonly Font EpicGearDetailFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
         public static readonly Font TahomaFont = new Font("Tahoma", 12f, GraphicsUnit.Pixel);
-        public static readonly Font SetItemPropFont = new Font("SimSun", 11f, GraphicsUnit.Pixel);
-        public static readonly Font ItemReqLevelFont = new Font("SimSun", 11f, GraphicsUnit.Pixel);
+        public static readonly Font SetItemPropFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+        public static readonly Font ItemReqLevelFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
 
         public static Font ItemNameFont2 { get; private set; }
         public static Font ItemDetailFont2 { get; private set; }
