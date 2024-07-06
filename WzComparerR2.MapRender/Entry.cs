@@ -41,8 +41,8 @@ namespace WzComparerR2.MapRender
             bar.Items.Add(btnItemMapRender);
 #endif
 
-            this.bar2 = Context.AddRibbonBar("Modules", "マップレンダラー");
-            btnItemMapRenderV2 = new ButtonItem("", "レンダーマップ");
+            this.bar2 = Context.AddRibbonBar("Modules", "地图渲染器");
+            btnItemMapRenderV2 = new ButtonItem("", " 渲染地图 ");
             btnItemMapRenderV2.Click += btnItem_Click;
             bar2.Items.Add(btnItemMapRenderV2);
 

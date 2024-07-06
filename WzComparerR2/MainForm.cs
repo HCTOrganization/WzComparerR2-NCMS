@@ -3377,10 +3377,10 @@ namespace WzComparerR2
             Process.Start(new ProcessStartInfo
             {
                 UseShellExecute = true,
-                FileName = "https://github.com/HikariCalyx/WzComparerR2-JMS/releases",
+                FileName = "https://github.com/HCTOrganization/WzComparerR2-NCMS/releases",
             });
 #else
-            Process.Start("https://github.com/HikariCalyx/WzComparerR2-JMS/releases");
+            Process.Start("https://github.com/HCTOrganization/WzComparerR2-NCMS/releases");
 #endif
         }
 

@@ -54,7 +54,7 @@
             this.bar1.CanDockTop = false;
             this.bar1.Controls.Add(this.panelDockContainer1);
             this.bar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bar1.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.bar1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.bar1.IsMaximized = false;
             this.bar1.Items.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.dockContainerItem1});
@@ -151,7 +151,7 @@
             // 
             this.dockContainerItem1.Control = this.panelDockContainer1;
             this.dockContainerItem1.Name = "dockContainerItem1";
-            this.dockContainerItem1.Text = "ネットワークロガー";
+            this.dockContainerItem1.Text = "网络日志监视器";
             // 
             // LoggerForm
             // 

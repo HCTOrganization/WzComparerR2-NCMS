@@ -24,12 +24,12 @@ namespace WzComparerR2
             InitializeComponent();
 #if NET6_0_OR_GREATER
             // https://learn.microsoft.com/en-us/dotnet/core/compatibility/fx-core#controldefaultfont-changed-to-segoe-ui-9pt
-            this.Font = new Font(new FontFamily("MS PGothic"), 9f);
+            this.Font = new Font(new FontFamily("SimSun"), 9f);
 #endif
 
             cmbWzEncoding.Items.AddRange(new[]
             {
-                new ComboItem("デフォルト"){ Value = 0 },
+                new ComboItem("默认值"){ Value = 0 },
                 new ComboItem("Shift-JIS (JMS)"){ Value = 932 },
                 new ComboItem("GB 2312 (CMS)"){ Value = 936 },
                 new ComboItem("EUC-KR (KMS)"){ Value = 949 },
@@ -40,8 +40,8 @@ namespace WzComparerR2
 
             cmbWzVersionVerifyMode.Items.AddRange(new[]
             {
-                new ComboItem("デフォルトの方法"){ Value = WzLib.WzVersionVerifyMode.Default },
-                new ComboItem("高速な方法"){ Value = WzLib.WzVersionVerifyMode.Fast },
+                new ComboItem("默认方式"){ Value = WzLib.WzVersionVerifyMode.Default },
+                new ComboItem("快速方式"){ Value = WzLib.WzVersionVerifyMode.Fast },
             });
         }
 
@@ -101,16 +101,16 @@ namespace WzComparerR2
             {
                 string respJson = new StreamReader(req.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd();
                 Clipboard.SetText(respJson);
-                respText = "この API キーは有効です。" + Environment.NewLine + "この API キーに関連付けられたキャラクターが JSON 形式でクリップボードにコピーされました。";
+                respText = "这个 API KEY 有效。" + Environment.NewLine + "与该 API KEY 关联的角色信息已复制到剪贴板。";
             }
             catch (WebException ex)
             {
                 string respJson = new StreamReader(ex.Response.GetResponseStream(), Encoding.UTF8).ReadToEnd();
-                respText = "この API キーは無効です。" + Environment.NewLine + respJson;
+                respText = "这个 API KEY 无效。" + Environment.NewLine + respJson;
             }
             catch (Exception ex)
             {
-                respText = "不明なエラーが発生しました：" + ex;
+                respText = "发生不明错误：" + ex;
             }
             MessageBoxEx.Show(respText);
         }

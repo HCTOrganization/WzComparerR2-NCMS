@@ -380,7 +380,7 @@
             this.ribbonBar8.Size = new System.Drawing.Size(270, 91);
             this.ribbonBar8.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.ribbonBar8.TabIndex = 1;
-            this.ribbonBar8.Text = "シミュレーション";
+            this.ribbonBar8.Text = "模拟功能";
             // 
             // 
             // 
@@ -550,7 +550,7 @@
             // 
             // comboItem15
             // 
-            this.comboItem15.Text = "SimSun";
+            this.comboItem15.Text = "MS Gothic";
             // 
             // comboItem16
             // 
@@ -583,7 +583,7 @@
             this.buttonItemQuickView.Name = "buttonItemQuickView";
             this.buttonItemQuickView.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.itemContainer42});
-            this.buttonItemQuickView.Text = "プレビュー";
+            this.buttonItemQuickView.Text = "预览";
             this.buttonItemQuickView.Click += new System.EventHandler(this.buttonItemQuickView_Click);
             // 
             // itemContainer42
@@ -606,8 +606,8 @@
             // 
             this.buttonItemAutoQuickView.AutoCheckOnClick = true;
             this.buttonItemAutoQuickView.Name = "buttonItemAutoQuickView";
-            this.buttonItemAutoQuickView.Text = "自動プレビュー";
-            this.buttonItemAutoQuickView.Tooltip = "自動プレビューのオン/オフ";
+            this.buttonItemAutoQuickView.Text = "自动预览";
+            this.buttonItemAutoQuickView.Tooltip = "自动预览开/关";
             this.buttonItemAutoQuickView.Click += new System.EventHandler(this.buttonItemAutoQuickView_Click);
             // 
             // buttonItemQuickViewSetting
@@ -635,7 +635,7 @@
             this.buttonItemSetItems.Name = "buttonItemSetItems";
             this.buttonItemSetItems.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.itemContainer43});
-            this.buttonItemSetItems.Text = "アイテム管理";
+            this.buttonItemSetItems.Text = "道具管理";
             // 
             // itemContainer43
             // 
@@ -657,19 +657,19 @@
             // buttonItemClearSetItems
             // 
             this.buttonItemClearSetItems.Name = "buttonItemClearSetItems";
-            this.buttonItemClearSetItems.Text = "アイテムセットを統合する";
+            this.buttonItemClearSetItems.Text = "整理道具";
             this.buttonItemClearSetItems.Click += new System.EventHandler(this.buttonItemClearSetItems_Click);
             // 
             // buttonItemClearExclusiveEquips
             // 
             this.buttonItemClearExclusiveEquips.Name = "buttonItemClearExclusiveEquips";
-            this.buttonItemClearExclusiveEquips.Text = "重複しないアイテムを統合する";
+            this.buttonItemClearExclusiveEquips.Text = "按种类排序";
             this.buttonItemClearExclusiveEquips.Click += new System.EventHandler(this.buttonItemClearExclusiveEquips_Click);
             // 
             // buttonItemClearCommodities
             // 
             this.buttonItemClearCommodities.Name = "buttonItemClearCommodities";
-            this.buttonItemClearCommodities.Text = "現金アイテムを統合する";
+            this.buttonItemClearCommodities.Text = "整理现金道具";
             this.buttonItemClearCommodities.Click += new System.EventHandler(this.buttonItemClearCommodities_Click);
             // 
             // itemContainer28
@@ -707,8 +707,8 @@
             // 
             this.buttonItemCharItem.AutoCheckOnClick = true;
             this.buttonItemCharItem.Name = "buttonItemCharItem";
-            this.buttonItemCharItem.Text = "インベントリ";
-            this.buttonItemCharItem.Tooltip = "インベントリウィンドウのオン/オフ";
+            this.buttonItemCharItem.Text = "道具背包";
+            this.buttonItemCharItem.Tooltip = "打开/关闭道具背包";
             this.buttonItemCharItem.CheckedChanged += new System.EventHandler(this.buttonItemCharItem_CheckedChanged);
             // 
             // itemContainer30
@@ -729,8 +729,8 @@
             // 
             this.buttonItemCharaStat.AutoCheckOnClick = true;
             this.buttonItemCharaStat.Name = "buttonItemCharaStat";
-            this.buttonItemCharaStat.Text = "ステータス";
-            this.buttonItemCharaStat.Tooltip = "ステータスウィンドウのON/OFF";
+            this.buttonItemCharaStat.Text = "角色信息";
+            this.buttonItemCharaStat.Tooltip = "角色信息开/关";
             this.buttonItemCharaStat.CheckedChanged += new System.EventHandler(this.buttonItemCharaStat_CheckedChanged);
             // 
             // itemContainer31
@@ -787,8 +787,8 @@
             // buttonItemAddItem
             // 
             this.buttonItemAddItem.Name = "buttonItemAddItem";
-            this.buttonItemAddItem.Text = "アイテムの追加";
-            this.buttonItemAddItem.Tooltip = "選択したアイテムをインベントリウィンドウに追加します";
+            this.buttonItemAddItem.Text = "添加道具";
+            this.buttonItemAddItem.Tooltip = "将选中的道具加入道具背包";
             this.buttonItemAddItem.Click += new System.EventHandler(this.buttonItemAddItem_Click);
             // 
             // itemContainer34
@@ -837,7 +837,7 @@
             this.ribbonBar3.Size = new System.Drawing.Size(262, 91);
             this.ribbonBar3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.ribbonBar3.TabIndex = 0;
-            this.ribbonBar3.Text = "音楽プレーヤー";
+            this.ribbonBar3.Text = "音乐播放器";
             // 
             // 
             // 
@@ -914,7 +914,7 @@
             // checkBoxItemSoundLoop
             // 
             this.checkBoxItemSoundLoop.Name = "checkBoxItemSoundLoop";
-            this.checkBoxItemSoundLoop.Text = "ループ";
+            this.checkBoxItemSoundLoop.Text = "循环播放";
             this.checkBoxItemSoundLoop.CheckedChanged += new DevComponents.DotNetBar.CheckBoxChangeEventHandler(this.checkBoxItemSoundLoop_CheckedChanged);
             // 
             // itemContainer18
@@ -960,28 +960,28 @@
             // 
             this.buttonItemLoadSound.Image = global::WzComparerR2.Properties.Resources.Open;
             this.buttonItemLoadSound.Name = "buttonItemLoadSound";
-            this.buttonItemLoadSound.Text = "Load";
+            this.buttonItemLoadSound.Text = "打开";
             this.buttonItemLoadSound.Click += new System.EventHandler(this.buttonItemLoadSound_Click);
             // 
             // buttonItemSoundPlay
             // 
             this.buttonItemSoundPlay.Image = global::WzComparerR2.Properties.Resources.Play;
             this.buttonItemSoundPlay.Name = "buttonItemSoundPlay";
-            this.buttonItemSoundPlay.Text = " Play";
+            this.buttonItemSoundPlay.Text = "播放";
             this.buttonItemSoundPlay.Click += new System.EventHandler(this.buttonItemSoundPlay_Click);
             // 
             // buttonItemSoundStop
             // 
             this.buttonItemSoundStop.Image = global::WzComparerR2.Properties.Resources.Stop;
             this.buttonItemSoundStop.Name = "buttonItemSoundStop";
-            this.buttonItemSoundStop.Text = "Stop";
+            this.buttonItemSoundStop.Text = "停止";
             this.buttonItemSoundStop.Click += new System.EventHandler(this.buttonItemSoundStop_Click);
             // 
             // buttonItemSoundSave
             // 
             this.buttonItemSoundSave.Image = global::WzComparerR2.Properties.Resources.Save;
             this.buttonItemSoundSave.Name = "buttonItemSoundSave";
-            this.buttonItemSoundSave.Text = "Save";
+            this.buttonItemSoundSave.Text = "保存";
             this.buttonItemSoundSave.Click += new System.EventHandler(this.buttonItemSoundSave_Click);
             // 
             // sliderItemSoundVol
@@ -1053,7 +1053,7 @@
             // 
             this.buttonItemPatcher.Name = "buttonItemPatcher";
             this.buttonItemPatcher.SubItemsExpandWidth = 16;
-            this.buttonItemPatcher.Text = "ゲームパッチャー";
+            this.buttonItemPatcher.Text = "游戏更新器";
             this.buttonItemPatcher.Click += new System.EventHandler(this.buttonItemPatcher_Click);
             // 
             // ribbonBar4
@@ -1077,7 +1077,7 @@
             this.ribbonBar4.Size = new System.Drawing.Size(168, 91);
             this.ribbonBar4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.ribbonBar4.TabIndex = 1;
-            this.ribbonBar4.Text = "キーワード搜索";
+            this.ribbonBar4.Text = "关键字搜索";
             // 
             // 
             // 
@@ -1122,7 +1122,7 @@
             // labelItem2
             // 
             this.labelItem2.Name = "labelItem2";
-            this.labelItem2.Text = "文字列";
+            this.labelItem2.Text = "字符串";
             // 
             // textBoxItemSearchString
             // 
@@ -1170,23 +1170,23 @@
             // 
             // comboItem3
             // 
-            this.comboItem3.Text = "全て";
+            this.comboItem3.Text = "全部";
             // 
             // comboItem4
             // 
-            this.comboItem4.Text = "装備";
+            this.comboItem4.Text = "装备 Equip";
             // 
             // comboItem5
             // 
-            this.comboItem5.Text = "アイテム";
+            this.comboItem5.Text = "道具 Item";
             // 
             // comboItem6
             // 
-            this.comboItem6.Text = "マップ";
+            this.comboItem6.Text = "地图 Map";
             // 
             // comboItem7
             // 
-            this.comboItem7.Text = "モンスター";
+            this.comboItem7.Text = "怪物 Mob";
             // 
             // comboItem8
             // 
@@ -1194,11 +1194,11 @@
             // 
             // comboItem9
             // 
-            this.comboItem9.Text = "スキル";
+            this.comboItem9.Text = "技能 Skill";
             // 
             // comboItem19
             // 
-            this.comboItem19.Text = "アイテムセット";
+            this.comboItem19.Text = "道具背包 Set";
             // 
             // itemContainer12
             // 
@@ -1234,13 +1234,13 @@
             // buttonItemSelectStringWz
             // 
             this.buttonItemSelectStringWz.Name = "buttonItemSelectStringWz";
-            this.buttonItemSelectStringWz.Text = "Base.wzを選択 (&A)";
+            this.buttonItemSelectStringWz.Text = "选择 Base.wz (&A)";
             this.buttonItemSelectStringWz.Click += new System.EventHandler(this.buttonItemSelectStringWz_Click);
             // 
             // buttonItemClearStringWz
             // 
             this.buttonItemClearStringWz.Name = "buttonItemClearStringWz";
-            this.buttonItemClearStringWz.Text = "文字列テーブルのリンクを解除する";
+            this.buttonItemClearStringWz.Text = "清除字符串表关联";
             this.buttonItemClearStringWz.Click += new System.EventHandler(this.buttonItemClearStringWz_Click);
             // 
             // ribbonBar1
@@ -1438,7 +1438,7 @@
             this.ribbonBar11.Size = new System.Drawing.Size(140, 91);
             this.ribbonBar11.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.ribbonBar11.TabIndex = 2;
-            this.ribbonBar11.Text = "試験的な機能";
+            this.ribbonBar11.Text = "测试功能";
             // 
             // 
             // 
@@ -1452,7 +1452,7 @@
             // 
             this.buttonItem1.Name = "buttonItem1";
             this.buttonItem1.SubItemsExpandWidth = 28;
-            this.buttonItem1.Text = "未実装";
+            this.buttonItem1.Text = "未加入";
             this.buttonItem1.Click += new System.EventHandler(this.buttonItem1_Click);
             // 
             // ribbonBar7
@@ -1476,7 +1476,7 @@
             this.ribbonBar7.Size = new System.Drawing.Size(57, 91);
             this.ribbonBar7.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.ribbonBar7.TabIndex = 1;
-            this.ribbonBar7.Text = "アップデート";
+            this.ribbonBar7.Text = "检查更新";
             // 
             // 
             // 
@@ -1490,7 +1490,7 @@
             // 
             this.buttonItemUpdate.Name = "buttonItemUpdate";
             this.buttonItemUpdate.SubItemsExpandWidth = 14;
-            this.buttonItemUpdate.Text = "アップデート";
+            this.buttonItemUpdate.Text = "检查更新";
             this.buttonItemUpdate.Click += new System.EventHandler(this.buttonItemUpdate_Click);
             // 
             // ribbonBar6
@@ -1514,7 +1514,7 @@
             this.ribbonBar6.Size = new System.Drawing.Size(50, 91);
             this.ribbonBar6.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.ribbonBar6.TabIndex = 0;
-            this.ribbonBar6.Text = "ついて";
+            this.ribbonBar6.Text = "关于";
             // 
             // 
             // 
@@ -1528,7 +1528,7 @@
             // 
             this.buttonItemAbout.Name = "buttonItemAbout";
             this.buttonItemAbout.SubItemsExpandWidth = 14;
-            this.buttonItemAbout.Text = "ついて";
+            this.buttonItemAbout.Text = "关于";
             this.buttonItemAbout.Click += new System.EventHandler(this.buttonItemAbout_Click);
             // 
             // ribbonTabItem1
@@ -2065,7 +2065,7 @@
             //
             this.buttonItemExtractGifEx.Name = "buttonItemExtractGifEx";
             this.buttonItemExtractGifEx.Text = "提取GifEx";
-            this.buttonItemExtractGifEx.Tooltip = "順序节点名を使用せずに、選択した节点のすべての子节点のフレーム アニメーションを抽出します。";
+            this.buttonItemExtractGifEx.Tooltip = "提取所选点的所有子点的帧动画，而不使用序数名称。";
             this.buttonItemExtractGifEx.Click += new System.EventHandler(this.buttonItemGif_Click);
             // 
             // buttonItemGifSetting
@@ -2183,13 +2183,13 @@
             // columnHeader4
             // 
             this.columnHeader4.Name = "columnHeader4";
-            this.columnHeader4.Text = "値";
+            this.columnHeader4.Text = "数值";
             this.columnHeader4.Width.Absolute = 150;
             // 
             // columnHeader5
             // 
             this.columnHeader5.Name = "columnHeader5";
-            this.columnHeader5.Text = "種類";
+            this.columnHeader5.Text = "数值类型";
             this.columnHeader5.Width.Absolute = 150;
             // 
             // contextMenuStrip2
@@ -2218,14 +2218,14 @@
             this.tsmi2SaveAs.Name = "tsmi2SaveAs";
             this.tsmi2SaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.tsmi2SaveAs.Size = new System.Drawing.Size(195, 22);
-            this.tsmi2SaveAs.Text = "Save";
+            this.tsmi2SaveAs.Text = "保存";
             this.tsmi2SaveAs.Click += new System.EventHandler(this.tsmi2SaveAs_Click);
             // 
             // tsmi2HandleUol
             // 
             this.tsmi2HandleUol.Name = "tsmi2HandleUol";
             this.tsmi2HandleUol.Size = new System.Drawing.Size(195, 22);
-            this.tsmi2HandleUol.Text = "Follow UOL";
+            this.tsmi2HandleUol.Text = "跟踪UOL";
             this.tsmi2HandleUol.Click += new System.EventHandler(this.tsmi2HandleUol_Click);
             // 
             // tsmi2Splitter1
@@ -2237,14 +2237,14 @@
             // 
             this.tsmi2ExpandAll.Name = "tsmi2ExpandAll";
             this.tsmi2ExpandAll.Size = new System.Drawing.Size(195, 22);
-            this.tsmi2ExpandAll.Text = "Expand All";
+            this.tsmi2ExpandAll.Text = "全部展开";
             this.tsmi2ExpandAll.Click += new System.EventHandler(this.tsmi2ExpandAll_Click);
             // 
             // tsmi2CollapseAll
             // 
             this.tsmi2CollapseAll.Name = "tsmi2CollapseAll";
             this.tsmi2CollapseAll.Size = new System.Drawing.Size(195, 22);
-            this.tsmi2CollapseAll.Text = "Collapse All";
+            this.tsmi2CollapseAll.Text = "全部折叠";
             this.tsmi2CollapseAll.Click += new System.EventHandler(this.tsmi2CollapseAll_Click);
             // 
             // toolStripMenuItem1
@@ -2361,7 +2361,7 @@
             this.superTabItem1.AttachedControl = this.superTabControlPanel1;
             this.superTabItem1.GlobalItem = false;
             this.superTabItem1.Name = "superTabItem1";
-            this.superTabItem1.Text = "WZ情報";
+            this.superTabItem1.Text = "WZ属性";
             // 
             // superTabControlPanel2
             // 
@@ -2394,9 +2394,9 @@
             this.chkResolvePngLink.Name = "chkResolvePngLink";
             this.chkResolvePngLink.Size = new System.Drawing.Size(137, 23);
             this.chkResolvePngLink.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.chkResolvePngLink, new DevComponents.DotNetBar.SuperTooltipInfo("PNGリンクを解決", "", "比較レポートは、リンクされた画像を分析して比較します。\r\nこれにより、冗長な変更が除外されます。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(190, 100)));
+            this.superTooltip1.SetSuperTooltip(this.chkResolvePngLink, new DevComponents.DotNetBar.SuperTooltipInfo("解析PNG内链", "", "比较报告分析和比较链接的图像。 \r\n这将过滤掉多余的更改。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(190, 100)));
             this.chkResolvePngLink.TabIndex = 9;
-            this.chkResolvePngLink.Text = "PNGリンクを解決";
+            this.chkResolvePngLink.Text = "解析PNG内链";
             // 
             // chkEnableDarkMode
             // 
@@ -2408,7 +2408,7 @@
             this.chkEnableDarkMode.Name = "chkEnableDarkMode";
             this.chkEnableDarkMode.Size = new System.Drawing.Size(115, 23);
             this.chkEnableDarkMode.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.chkEnableDarkMode, new DevComponents.DotNetBar.SuperTooltipInfo("ダークモード", "", "ダークモードHTMLとの比較を出力します。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 70)));
+            this.superTooltip1.SetSuperTooltip(this.chkEnableDarkMode, new DevComponents.DotNetBar.SuperTooltipInfo("暗黑模式", "", "HTML 对比报告将以暗黑模式输出。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 70)));
             this.chkEnableDarkMode.TabIndex = 9;
             this.chkEnableDarkMode.Text = "ダークモード";
             // 
@@ -2422,7 +2422,7 @@
             this.chkOutputSkillTooltip.Name = "chkSaveSkillTooltip";
             this.chkOutputSkillTooltip.Size = new System.Drawing.Size(135, 23);
             this.chkOutputSkillTooltip.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.chkOutputSkillTooltip, new DevComponents.DotNetBar.SuperTooltipInfo("スキル比較の出力", "", "変更したスキルを自動で出力する機能です。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 70)));
+            this.superTooltip1.SetSuperTooltip(this.chkOutputSkillTooltip, new DevComponents.DotNetBar.SuperTooltipInfo("输出技能对比", "", "将在对比过程中自动输出技能改动对比。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 70)));
             this.chkOutputSkillTooltip.TabIndex = 11;
             this.chkOutputSkillTooltip.Text = "スキル比較の出力";
             // 
@@ -2436,7 +2436,7 @@
             this.chkOutputRemovedImg.Name = "chkOutputRemovedImg";
             this.chkOutputRemovedImg.Size = new System.Drawing.Size(135, 23);
             this.chkOutputRemovedImg.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.chkOutputRemovedImg, new DevComponents.DotNetBar.SuperTooltipInfo("削除済みファイル", "", "削除されたファイルを表示します。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 60)));
+            this.superTooltip1.SetSuperTooltip(this.chkOutputRemovedImg, new DevComponents.DotNetBar.SuperTooltipInfo("已删除文件", "", "削除されたファイルを表示します。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 60)));
             this.chkOutputRemovedImg.TabIndex = 8;
             this.chkOutputRemovedImg.Text = "削除済みファイル";
             // 
@@ -2544,7 +2544,7 @@
             this.superTabItem2.AttachedControl = this.superTabControlPanel2;
             this.superTabItem2.GlobalItem = false;
             this.superTabItem2.Name = "superTabItem2";
-            this.superTabItem2.Text = "WZ比較";
+            this.superTabItem2.Text = "WZ对比";
             // 
             // superTabControlPanel3
             // 
@@ -2586,7 +2586,7 @@
             this.superTabItem3.AttachedControl = this.superTabControlPanel3;
             this.superTabItem3.GlobalItem = false;
             this.superTabItem3.Name = "superTabItem3";
-            this.superTabItem3.Text = "データベース";
+            this.superTabItem3.Text = "数据库";
             // btnNodeBack
             // 
             this.btnNodeBack.ImagePaddingHorizontal = 6;
@@ -2807,17 +2807,17 @@
             // 
             // columnHeader7
             // 
-            this.columnHeader7.Text = "名前";
+            this.columnHeader7.Text = "名称";
             this.columnHeader7.Width = 250;
             // 
             // columnHeader8
             // 
-            this.columnHeader8.Text = "説明";
+            this.columnHeader8.Text = "描述";
             this.columnHeader8.Width = 450;
             // 
             // columnHeader9
             // 
-            this.columnHeader9.Text = "パス";
+            this.columnHeader9.Text = "路径";
             this.columnHeader9.Width = 200;
             // 
             // comboItem1

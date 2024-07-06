@@ -85,7 +85,7 @@
             this.buttonX2.Size = new System.Drawing.Size(65, 23);
             this.buttonX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX2.TabIndex = 1;
-            this.buttonX2.Text = "キャンセル";
+            this.buttonX2.Text = "取消";
             // 
             // buttonX1
             // 
@@ -98,7 +98,7 @@
             this.buttonX1.Size = new System.Drawing.Size(60, 23);
             this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX1.TabIndex = 0;
-            this.buttonX1.Text = "OK";
+            this.buttonX1.Text = "确定";
             // 
             // txtAPIkey
             // 
@@ -122,7 +122,7 @@
             this.buttonXCheck.Size = new System.Drawing.Size(55, 19);
             this.buttonXCheck.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonXCheck.TabIndex = 4;
-            this.buttonXCheck.Text = "検査する";
+            this.buttonXCheck.Text = "检查 KEY";
             this.buttonXCheck.Click += new System.EventHandler(this.buttonXCheck_Click);
             // 
             // superTabControl1
@@ -149,11 +149,11 @@
             this.superTabControl1.Location = new System.Drawing.Point(0, 0);
             this.superTabControl1.Name = "superTabControl1";
             this.superTabControl1.ReorderTabsEnabled = true;
-            this.superTabControl1.SelectedTabFont = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Bold);
+            this.superTabControl1.SelectedTabFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold);
             this.superTabControl1.SelectedTabIndex = 0;
             this.superTabControl1.Size = new System.Drawing.Size(400, 171);
             this.superTabControl1.TabAlignment = DevComponents.DotNetBar.eTabStripAlignment.Left;
-            this.superTabControl1.TabFont = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.superTabControl1.TabFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.superTabControl1.TabIndex = 4;
             this.superTabControl1.Tabs.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.superTabItem1,
@@ -202,7 +202,7 @@
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(138, 16);
             this.labelX2.TabIndex = 7;
-            this.labelX2.Text = "WZのバージョン確認方法";
+            this.labelX2.Text = "WZ 版本确定方法";
             // 
             // chkImgCheckDisabled
             // 
@@ -217,7 +217,7 @@
             this.chkImgCheckDisabled.Size = new System.Drawing.Size(212, 16);
             this.chkImgCheckDisabled.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkImgCheckDisabled.TabIndex = 6;
-            this.chkImgCheckDisabled.Text = "IMGチェックサム検証をスキップする";
+            this.chkImgCheckDisabled.Text = "跳过 IMG 校验和验证";
             // 
             // chkWzSortByImgID
             // 
@@ -232,7 +232,7 @@
             this.chkWzSortByImgID.Size = new System.Drawing.Size(180, 16);
             this.chkWzSortByImgID.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkWzSortByImgID.TabIndex = 5;
-            this.chkWzSortByImgID.Text = "IMGファイルごとに並べ替える";
+            this.chkWzSortByImgID.Text = "按 IMG 文件排序";
             // 
             // chkAutoCheckExtFiles
             // 
@@ -247,7 +247,7 @@
             this.chkAutoCheckExtFiles.Size = new System.Drawing.Size(225, 16);
             this.chkAutoCheckExtFiles.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkAutoCheckExtFiles.TabIndex = 4;
-            this.chkAutoCheckExtFiles.Text = "分割されたWZファイルを自動検出する";
+            this.chkAutoCheckExtFiles.Text = "自动检测拆分的 WZ 文件";
             // 
             // cmbWzEncoding
             // 
@@ -274,7 +274,7 @@
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(84, 16);
             this.labelX1.TabIndex = 2;
-            this.labelX1.Text = "WZ符号化方式";
+            this.labelX1.Text = "WZ 编码方式";
             // 
             // chkWzAutoSort
             // 
@@ -289,14 +289,14 @@
             this.chkWzAutoSort.Size = new System.Drawing.Size(170, 16);
             this.chkWzAutoSort.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkWzAutoSort.TabIndex = 0;
-            this.chkWzAutoSort.Text = "WZファイルの自動並べ替え";
+            this.chkWzAutoSort.Text = "WZ 文件自动排序";
             // 
             // superTabItem1
             // 
             this.superTabItem1.AttachedControl = this.superTabControlPanel1;
             this.superTabItem1.GlobalItem = false;
             this.superTabItem1.Name = "superTabItem1";
-            this.superTabItem1.Text = "一般";
+            this.superTabItem1.Text = "基本";
             // 
             // superTabControlPanel2
             // 
@@ -322,7 +322,7 @@
             this.labelX3.Location = new System.Drawing.Point(14, 15);
             this.labelX3.Name = "labelX3";
             this.labelX3.TabIndex = 9;
-            this.labelX3.Text = "APIキー";
+            this.labelX3.Text = "API KEY";
             // 
             // superTabItem2
             // 
@@ -339,12 +339,12 @@
             this.Controls.Add(this.superTabControl1);
             this.Controls.Add(this.panelEx1);
             this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("MS PGothic", 9F);
+            this.Font = new System.Drawing.Font("SimSun", 9F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "FrmOptions";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "設定";
+            this.Text = "设置";
             this.panelEx1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl1)).EndInit();
             this.superTabControl1.ResumeLayout(false);
