@@ -26,7 +26,7 @@ namespace WzComparerR2
             InitializeComponent();
 #if NET6_0_OR_GREATER
             // https://learn.microsoft.com/en-us/dotnet/core/compatibility/fx-core#controldefaultfont-changed-to-segoe-ui-9pt
-            this.Font = new Font(new FontFamily("MS PGothic"), 9f);
+            this.Font = new Font(new FontFamily("SimSun"), 9f);
 #endif
             panelEx1.AutoScroll = true;
 
@@ -178,7 +178,7 @@ namespace WzComparerR2
                 item.GetFileLength();
                 if (item.FileLength > 0)
                 {
-                    switch (MessageBoxEx.Show(string.Format("サイズ: {0:N0} バイト\r\n最終更新日: {1:yyyy年M月d日 HH:mm:ss}\r\nダウンロードしますか？", item.FileLength, item.LastModified), "確認", MessageBoxButtons.YesNo))
+                    switch (MessageBoxEx.Show(string.Format("文件大小：{0:N0} bytes, 更新时间：{1:yyyy-MM-dd HH:mm:ss}\r\n是否立即开始下载文件？", item.FileLength, item.LastModified), "游戏更新器", MessageBoxButtons.YesNo))
                     {
                         case DialogResult.Yes:
                         #if NET6_0_OR_GREATER
