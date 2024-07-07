@@ -541,6 +541,7 @@ namespace WzComparerR2.CharaSim
                 case 63: return "炼狱黑客可穿戴装备";
                 case 64: return "魔链影士可穿戴装备";
                 case 65: return "爆莉萌天使可穿戴装备";
+                case 99: return "小白狐可穿戴装备";
                 case 101: return "神之子可穿戴装备";
                 case 112: return "林之灵可穿戴装备";
                 case 142: return "超能力者可穿戴装备";
