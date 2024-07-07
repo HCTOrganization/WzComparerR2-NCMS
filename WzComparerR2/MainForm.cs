@@ -748,7 +748,7 @@ namespace WzComparerR2
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
-                dlg.Title = "WZファイルを選択";
+                dlg.Title = "请选择冒险岛WZ文件";
                 dlg.Filter = "Base.wz|*.wz";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
@@ -765,7 +765,7 @@ namespace WzComparerR2
                 {
                     if (string.Compare(wz_f.Header.FileName, wzFilePath, true) == 0)
                     {
-                        MessageBoxEx.Show("このWZファイルはすでに開かれています。", "エラー");
+                        MessageBoxEx.Show("此 WZ 文件已打开。", "错误");
                         return;
                     }
                 }
@@ -795,7 +795,7 @@ namespace WzComparerR2
                 this.openedWz.Add(wz);
                 OnWzOpened(new WzStructureEventArgs(wz)); //触发事件
                 QueryPerformance.End();
-                labelItemStatus.Text = "ファイルがロードされました。 時間が経過した：" + (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000) + "ミリ秒、" + wz.img_number + " IMG";
+                labelItemStatus.Text = "文件已加载。已用时间:" + (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000) + "毫秒," + wz.img_number + " IMG";
 
                 ConfigManager.Reload();
                 WcR2Config.Default.RecentDocuments.Remove(wzFilePath);
@@ -805,11 +805,11 @@ namespace WzComparerR2
             }
             catch (FileNotFoundException)
             {
-                MessageBoxEx.Show("ファイルが見つかりません。", "エラー");
+                MessageBoxEx.Show("找不到文件。", "错误");
             }
             catch (Exception ex)
             {
-                MessageBoxEx.Show(ex.ToString(), "エラー");
+                MessageBoxEx.Show(ex.ToString(), "错误");
                 wz.Clear();
             }
             finally
@@ -822,8 +822,8 @@ namespace WzComparerR2
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
-                dlg.Title = "メイプルストーリーIMGファイルを選択してください。";
-                dlg.Filter = "*.img;Data.wz (マイナー修正ファイル)|*.img;Data.wz|*.wz|*.wz";
+                dlg.Title = "请选择冒险岛 IMG 文件。";
+                dlg.Filter = "*.img;Data.wz (Minor 小幅更新文件)|*.img;Data.wz|*.wz|*.wz";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     openImg(dlg.FileName);
@@ -839,7 +839,7 @@ namespace WzComparerR2
                 {
                     if (StringComparer.OrdinalIgnoreCase.Equals(wz_f.Header.FileName, imgFileName))
                     {
-                        MessageBoxEx.Show("このWZファイルはすでに開かれています。", "エラー");
+                        MessageBoxEx.Show("此 WZ 文件已打开。", "错误");
                         return;
                     }
                 }
@@ -858,7 +858,7 @@ namespace WzComparerR2
                 this.openedWz.Add(wz);
                 OnWzOpened(new WzStructureEventArgs(wz)); //触发事件
                 sw.Stop();
-                labelItemStatus.Text = $"IMGファイルを開きました。 時間が経過した：{sw.ElapsedMilliseconds}ミリ秒";
+                labelItemStatus.Text = $"IMG文件已加载。已用时间: {sw.ElapsedMilliseconds}毫秒";
                 refreshRecentDocItems();
             }
             catch (FileNotFoundException)
@@ -3181,7 +3181,7 @@ namespace WzComparerR2
             if (compareThread != null)
             {
                 compareThread.Suspend();
-                if (DialogResult.Yes == MessageBoxEx.Show("比較が進行中です。 中絶しますか?", "Notice", MessageBoxButtons.YesNoCancel))
+                if (DialogResult.Yes == MessageBoxEx.Show("比较正在进行中。是否要中断？", "Notice", MessageBoxButtons.YesNoCancel))
                 {
                     compareThread.Resume();
                     compareThread.Interrupt();
@@ -3195,12 +3195,12 @@ namespace WzComparerR2
 
             if (openedWz.Count < 2)
             {
-                MessageBoxEx.Show("比較を開始するには、2つ以上のWZファイルを開いてください。", "エラー");
+                MessageBoxEx.Show("请打开两个或多个WZ文件开始比较。", "错误");
                 return;
             }
 
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "保存先のフォルダーを選択します。";
+            dlg.Description = "选择对比报告目标文件夹。";
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -3225,7 +3225,7 @@ namespace WzComparerR2
 
                         while (true)
                         {
-                            string txt = string.Format("WZファイル:\r\n\r\n  新しいバージョン: {0} (V{1})\r\n  古いバージョン: {2} (V{3})\r\n\r\n「Yes」をクリックして比較を開始します。 古いバージョンと新しいバージョンを交換するには、「No」をクリックします。",
+                            string txt = string.Format("WZ 文件:\r\n\r\n 新版本: {0} (V{1})\r\n 旧版本: {2} (V{3})\r\n\r\n单击“Yes”开始比较，单击“No”交换版本号。",
                                 fileNew.Header.FileName,
                                 fileNew.GetMergedVersion(),
                                 fileOld.Header.FileName,
@@ -3252,17 +3252,17 @@ namespace WzComparerR2
                     }
                     catch (ThreadAbortException)
                     {
-                        MessageBoxEx.Show(this, "比較は一時停止されました。", "エラー");
+                        MessageBoxEx.Show(this, "对比过程已终止。", "错误");
                     }
                     catch (Exception ex)
                     {
-                        MessageBoxEx.Show(this, "比較は一時停止されました。" + ex.ToString(), "エラー");
+                        MessageBoxEx.Show(this, "对比过程已终止。" + ex.ToString(), "错误");
                     }
                     finally
                     {
                         sw.Stop();
                         compareThread = null;
-                        labelXComp1.Text = "比較が完了しました。 時間が経過した：" + sw.Elapsed.ToString();
+                        labelXComp1.Text = "比较完成。经过时间:" + sw.Elapsed.ToString();
                         labelXComp2.Text = "";
                     }
                 });
@@ -3297,7 +3297,7 @@ namespace WzComparerR2
         private void btnExportSkill_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "エクスポート先のフォルダーを選択します。";
+            dlg.Description = "选择目标文件夹。";
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
@@ -3313,14 +3313,14 @@ namespace WzComparerR2
                     sw.Close();
                     fs.Dispose();
                 }
-                MessageBoxEx.Show("エクスポート完了。");
+                MessageBoxEx.Show("导出完成。");
             }
         }
 
         private void btnExportSkillOption_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "エクスポート先のフォルダーを選択します。";
+            dlg.Description = "选择目标文件夹。";
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
@@ -3328,7 +3328,7 @@ namespace WzComparerR2
 
                 DBConnection conn = new DBConnection(this.stringLinker);
                 conn.ExportSkillOption(dlg.SelectedPath);
-                MessageBoxEx.Show("エクスポート完了。");
+                MessageBoxEx.Show("导出完成。");
             }
         }
 

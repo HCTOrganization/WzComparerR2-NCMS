@@ -2410,7 +2410,7 @@
             this.chkEnableDarkMode.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.superTooltip1.SetSuperTooltip(this.chkEnableDarkMode, new DevComponents.DotNetBar.SuperTooltipInfo("暗黑模式", "", "HTML 对比报告将以暗黑模式输出。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 70)));
             this.chkEnableDarkMode.TabIndex = 9;
-            this.chkEnableDarkMode.Text = "ダークモード";
+            this.chkEnableDarkMode.Text = "暗黑模式";
             // 
             // chkOutputSkillTooltip
             // 
@@ -2424,7 +2424,7 @@
             this.chkOutputSkillTooltip.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.superTooltip1.SetSuperTooltip(this.chkOutputSkillTooltip, new DevComponents.DotNetBar.SuperTooltipInfo("输出技能对比", "", "将在对比过程中自动输出技能改动对比。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 70)));
             this.chkOutputSkillTooltip.TabIndex = 11;
-            this.chkOutputSkillTooltip.Text = "スキル比較の出力";
+            this.chkOutputSkillTooltip.Text = "输出技能对比";
             // 
             // chkOutputRemovedImg
             // 
@@ -2436,9 +2436,9 @@
             this.chkOutputRemovedImg.Name = "chkOutputRemovedImg";
             this.chkOutputRemovedImg.Size = new System.Drawing.Size(135, 23);
             this.chkOutputRemovedImg.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.chkOutputRemovedImg, new DevComponents.DotNetBar.SuperTooltipInfo("已删除文件", "", "削除されたファイルを表示します。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 60)));
+            this.superTooltip1.SetSuperTooltip(this.chkOutputRemovedImg, new DevComponents.DotNetBar.SuperTooltipInfo("已删除文件", "", "展示已删除的文件。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 60)));
             this.chkOutputRemovedImg.TabIndex = 8;
-            this.chkOutputRemovedImg.Text = "削除済みファイル";
+            this.chkOutputRemovedImg.Text = "已删除文件";
             // 
             // chkOutputAddedImg
             // 
@@ -2450,9 +2450,9 @@
             this.chkOutputAddedImg.Name = "chkOutputAddedImg";
             this.chkOutputAddedImg.Size = new System.Drawing.Size(135, 23);
             this.chkOutputAddedImg.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.chkOutputAddedImg, new DevComponents.DotNetBar.SuperTooltipInfo("追加ファイル", "", "追加されたファイルを表示します。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 60)));
+            this.superTooltip1.SetSuperTooltip(this.chkOutputAddedImg, new DevComponents.DotNetBar.SuperTooltipInfo("已添加文件", "", "展示已添加的文件。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 60)));
             this.chkOutputAddedImg.TabIndex = 7;
-            this.chkOutputAddedImg.Text = "追加ファイル";
+            this.chkOutputAddedImg.Text = "已添加文件";
             // 
             // labelX1
             // 
@@ -2480,9 +2480,9 @@
             this.chkOutputPng.Name = "chkOutputPng";
             this.chkOutputPng.Size = new System.Drawing.Size(107, 23);
             this.chkOutputPng.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.chkOutputPng, new DevComponents.DotNetBar.SuperTooltipInfo("PNGと音声", "", "PNGファイルと音声ファイルを表示します。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 60)));
+            this.superTooltip1.SetSuperTooltip(this.chkOutputPng, new DevComponents.DotNetBar.SuperTooltipInfo("PNG和音频", "", "输出 PNG 和音频文件。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 60)));
             this.chkOutputPng.TabIndex = 5;
-            this.chkOutputPng.Text = "PNGと音声";
+            this.chkOutputPng.Text = "PNG和音频";
             // 
             // cmbComparePng
             // 
@@ -2495,7 +2495,7 @@
             this.cmbComparePng.Name = "cmbComparePng";
             this.cmbComparePng.Size = new System.Drawing.Size(140, 21);
             this.cmbComparePng.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.cmbComparePng, new DevComponents.DotNetBar.SuperTooltipInfo("PNG比較", "", "画像の比較に関する情報。\r\nSizeOnly - ファイルサイズを比較して、トリミングまたはスキップされたファイルがあるかどうかを確認します。\r\nSizeAndDataLength - 画像を同時に圧縮する場合のサイズと時間を比較してください。" +
+            this.superTooltip1.SetSuperTooltip(this.cmbComparePng, new DevComponents.DotNetBar.SuperTooltipInfo("PNG对比", "", "画像の比較に関する情報。\r\nSizeOnly - ファイルサイズを比較して、トリミングまたはスキップされたファイルがあるかどうかを確認します。\r\nSizeAndDataLength - 画像を同時に圧縮する場合のサイズと時間を比較してください。" +
             "\r\nPixel - ピクセル精度の画像比較。比較プロセスを注意深くチェックします。これには時間がかかる場合がありますが、画像のサイズが同じであることが確認されます。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, true, new System.Drawing.Size(300, 170)));
             this.cmbComparePng.TabIndex = 4;
             // 
@@ -2536,7 +2536,7 @@
             this.btnEasyCompare.Size = new System.Drawing.Size(100, 30);
             this.btnEasyCompare.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnEasyCompare.TabIndex = 0;
-            this.btnEasyCompare.Text = "比較する";
+            this.btnEasyCompare.Text = "开始对比";
             this.btnEasyCompare.Click += new System.EventHandler(this.btnEasyCompare_Click);
             // 
             // superTabItem2
@@ -3014,9 +3014,9 @@
             this.chkHashPngFileName.Name = "chkHashPngFileName";
             this.chkHashPngFileName.Size = new System.Drawing.Size(107, 23);
             this.chkHashPngFileName.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.chkHashPngFileName, new DevComponents.DotNetBar.SuperTooltipInfo("ハッシュPNG名", "", "PNGファイル名をMD5ハッシュとして出力します。\r\nパスが長すぎて 255 の制限を超えている場合は、\r\nこのオプションを有効にしてください。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 70)));
+            this.superTooltip1.SetSuperTooltip(this.chkHashPngFileName, new DevComponents.DotNetBar.SuperTooltipInfo("PNG文件命名为校验值", "", "将 PNG 文件名输出为 MD5 哈希值。 \r\n如果您的路径太长并超过 255 限制，\r\n请启用此选项。", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 70)));
             this.chkHashPngFileName.TabIndex = 9;
-            this.chkHashPngFileName.Text = "ハッシュPNG名";
+            this.chkHashPngFileName.Text = "PNG文件命名为校验值";
             //
             // MainForm
             // 

@@ -133,7 +133,7 @@
             this.buttonX1.Size = new System.Drawing.Size(75, 23);
             this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX1.TabIndex = 8;
-            this.buttonX1.Text = "閉じる";
+            this.buttonX1.Text = "关闭";
             // 
             // advTree1
             // 
@@ -218,7 +218,7 @@
             this.MinimizeBox = false;
             this.Name = "FrmAbout";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "プログラムについて";
+            this.Text = "关于此程序";
             ((System.ComponentModel.ISupportInitialize)(this.advTree1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

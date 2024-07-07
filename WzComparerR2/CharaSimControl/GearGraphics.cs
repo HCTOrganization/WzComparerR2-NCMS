@@ -65,14 +65,14 @@ namespace WzComparerR2.CharaSimControl
                 ItemDetailFont2.Dispose();
                 ItemDetailFont2 = null;
             }
-            ItemDetailFont2 = new Font("SimSun", 11f, GraphicsUnit.Pixel);
+            ItemDetailFont2 = new Font("SimSun", 12f, GraphicsUnit.Pixel);
 
             if (EquipDetailFont2 != null)
             {
                 EquipDetailFont2.Dispose();
                 EquipDetailFont2 = null;
             }
-            EquipDetailFont2 = new Font("SimSun", 11f, GraphicsUnit.Pixel);
+            EquipDetailFont2 = new Font("SimSun", 12f, GraphicsUnit.Pixel);
         }
 
         public static readonly Color GearBackColor = Color.FromArgb(204, 0, 51, 85);

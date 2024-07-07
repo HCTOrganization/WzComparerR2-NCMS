@@ -166,9 +166,9 @@ namespace WzComparerR2.CharaSimControl
             //绘制desc
             picH = 35;
             if (Skill.HyperStat)
-                GearGraphics.DrawString(g, "[最大レベル：" + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont, region.LevelDescLeft, region.TextRight, ref picH, 16);
+                GearGraphics.DrawString(g, "[现在等级：" + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont, region.LevelDescLeft, region.TextRight, ref picH, 16);
             else if (!Skill.PreBBSkill)
-                GearGraphics.DrawString(g, "[マスターレベル：" + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont, region.SkillDescLeft, region.TextRight, ref picH, 16);
+                GearGraphics.DrawString(g, "[最高等级：" + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont, region.SkillDescLeft, region.TextRight, ref picH, 16);
 
             if (sr.Desc != null)
             {
@@ -179,7 +179,7 @@ namespace WzComparerR2.CharaSimControl
             if (Skill.TimeLimited)
             {
                 DateTime time = DateTime.Now.AddDays(7d);
-                string expireStr = time.ToString("有効期間: yyyy年 M月 d日 HH時 mm分");
+                string expireStr = time.ToString("有效期间: yyyy年 M月 d日 HH点 mm分");
                 // GearGraphics.DrawString(g, "#c" + expireStr + "#", GearGraphics.ItemDetailFont, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
                 GearGraphics.DrawString(g, "#c" + expireStr + "#", GearGraphics.ItemDetailFont2, v6SkillSummaryFontColorTable, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
             }
@@ -192,20 +192,20 @@ namespace WzComparerR2.CharaSimControl
                     sr2.Name = "(null)";
                 }
                 DateTime time = DateTime.Now.AddMinutes(Skill.RelationSkill.Item2);
-                string expireStr = time.ToString("有効期間: yyyy年 M月 d日 H時 m分");
+                string expireStr = time.ToString("有效期间: yyyy年 M月 d日 HH点 mm分");
                 // GearGraphics.DrawString(g, "#c" + sr2.Name + "の " + expireStr + "#", GearGraphics.ItemDetailFont, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
-                GearGraphics.DrawString(g, "#c" + sr2.Name + "の " + expireStr + "#", GearGraphics.ItemDetailFont2, v6SkillSummaryFontColorTable, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
+                GearGraphics.DrawString(g, "#c" + sr2.Name + "的 " + expireStr + "#", GearGraphics.ItemDetailFont2, v6SkillSummaryFontColorTable, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
             }
             if (Skill.IsPetAutoBuff)
             {
-                // GearGraphics.DrawString(g, "#cペットバフ自動スキル登録可能", GearGraphics.ItemDetailFont, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
+                // GearGraphics.DrawString(g, "#c可添加宠物自动加增益技能", GearGraphics.ItemDetailFont, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
                 if (DoSetDiffColor && DiffSkillTags.ContainsKey(skillIDstr) && DiffSkillTags[skillIDstr].Contains("IsPetAutoBuff"))
                 {
-                    GearGraphics.DrawString(g, "#gペットバフ自動スキル登録可能#", GearGraphics.ItemDetailFont2, v6SkillSummaryFontColorTable, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
+                    GearGraphics.DrawString(g, "#g可添加宠物自动加增益技能#", GearGraphics.ItemDetailFont2, v6SkillSummaryFontColorTable, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
                 }
                 else
                 {
-                    GearGraphics.DrawString(g, "#cペットバフ自動スキル登録可能#", GearGraphics.ItemDetailFont2, v6SkillSummaryFontColorTable, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
+                    GearGraphics.DrawString(g, "#c可添加宠物自动加增益技能#", GearGraphics.ItemDetailFont2, v6SkillSummaryFontColorTable, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
                 }
             }
             /*if (Skill.ReqLevel > 0)
@@ -295,10 +295,10 @@ namespace WzComparerR2.CharaSimControl
                         IgnoreEvalError = this.IgnoreEvalError,
                     });
                 }
-                    GearGraphics.DrawString(g, "[現在レベル" + Skill.Level + "]", GearGraphics.ItemDetailFont, region.LevelDescLeft, region.TextRight, ref picH, 16);
+                    GearGraphics.DrawString(g, "[现在等级 " + Skill.Level + "]", GearGraphics.ItemDetailFont, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 if (Skill.SkillID / 10000 / 1000 == 10 && Skill.Level == 1 && Skill.ReqLevel > 0)
                 {
-                    GearGraphics.DrawPlainText(g, "[必要レベル: " + Skill.ReqLevel.ToString() + "レベル以上]", GearGraphics.ItemDetailFont, GearGraphics.skillYellowColor, region.LevelDescLeft, region.TextRight, ref picH, 16);
+                    GearGraphics.DrawPlainText(g, "[要求等级：" + Skill.ReqLevel.ToString() + "]", GearGraphics.ItemDetailFont, GearGraphics.skillYellowColor, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 }
                 if (hStr != null)
                 {
@@ -314,10 +314,10 @@ namespace WzComparerR2.CharaSimControl
                     ConvertPerM = this.DisplayPermyriadAsPercent,
                     IgnoreEvalError = this.IgnoreEvalError,
                 });
-                GearGraphics.DrawString(g, "[次のレベル" + (Skill.Level + 1) + "]", GearGraphics.ItemDetailFont, region.LevelDescLeft, region.TextRight, ref picH, 16);
+                GearGraphics.DrawString(g, "[下次等级 " + (Skill.Level + 1) + "]", GearGraphics.ItemDetailFont, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 if (Skill.SkillID / 10000 / 1000 == 10 && (Skill.Level + 1) == 1 && Skill.ReqLevel > 0)
                 {
-                    GearGraphics.DrawPlainText(g, "[必要レベル: " + Skill.ReqLevel.ToString() + "レベル以上]", GearGraphics.ItemDetailFont, GearGraphics.skillYellowColor, region.LevelDescLeft, region.TextRight, ref picH, 16);
+                    GearGraphics.DrawPlainText(g, "[要求等级：" + Skill.ReqLevel.ToString() + "]", GearGraphics.ItemDetailFont, GearGraphics.skillYellowColor, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 }
                 if (hStr != null)
                 {
@@ -331,7 +331,7 @@ namespace WzComparerR2.CharaSimControl
                 //delay rendering v6 splitter
                 splitterH.Add(picH);
                 picH += 15;
-                GearGraphics.DrawPlainText(g, "[コンビネーションスキル]", GearGraphics.ItemDetailFont, Color.FromArgb(119, 204, 255), region.LevelDescLeft, region.TextRight, ref picH, 16);
+                GearGraphics.DrawPlainText(g, "[组合技能]", GearGraphics.ItemDetailFont, Color.FromArgb(119, 204, 255), region.LevelDescLeft, region.TextRight, ref picH, 16);
                 picH += 4;
                 BitmapOrigin icon = new BitmapOrigin();
                 Wz_Node skillNode = PluginBase.PluginManager.FindWz(string.Format(@"Skill\{0}.img\skill\{1}", Skill.AddAttackToolTipDescSkill / 10000, Skill.AddAttackToolTipDescSkill));
@@ -364,7 +364,7 @@ namespace WzComparerR2.CharaSimControl
                 //delay rendering v6 splitter
                 splitterH.Add(picH);
                 picH += 15;
-                GearGraphics.DrawPlainText(g, "[アシストスキル]", GearGraphics.ItemDetailFont, GearGraphics.SkillSummaryOrangeTextColor, region.LevelDescLeft, region.TextRight, ref picH, 16);
+                GearGraphics.DrawPlainText(g, "[辅助技能]", GearGraphics.ItemDetailFont, GearGraphics.SkillSummaryOrangeTextColor, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 picH += 4;
                 BitmapOrigin icon = new BitmapOrigin();
                 Wz_Node skillNode = PluginBase.PluginManager.FindWz(string.Format(@"Skill\{0}.img\skill\{1}", Skill.AssistSkillLink / 10000, Skill.AssistSkillLink));
@@ -398,35 +398,35 @@ namespace WzComparerR2.CharaSimControl
                 List<string> attr = new List<string>();
                 if (Skill.ReqLevel > 0)
                  {
-                    attr.Add("必要レベル:" + Skill.ReqLevel);
+                    attr.Add("要求等级:" + Skill.ReqLevel);
                 }
                 if (Skill.Invisible)
                 {
-                    attr.Add("スキルウィンドウに表示されない");
+                    attr.Add("隐藏技能");
                 }
                 if (Skill.Hyper != HyperSkillType.None)
                 {
-                    attr.Add("ハイパースキル:" + Skill.Hyper);
+                    attr.Add("超级技能:" + Skill.Hyper);
                 }
                 if (Skill.CombatOrders)
                 {
-                    // attr.Add("コンバットオーダー適用");
+                    // attr.Add("战斗命令加成");
                     if (DoSetDiffColor && DiffSkillTags.ContainsKey(skillIDstr) && DiffSkillTags[skillIDstr].Contains("combatOrders"))
                     {
-                        attr.Add("#gコンバットオーダー適用#");
+                        attr.Add("#g战斗命令加成#");
                     }
                     else
                     {
-                        attr.Add("コンバットオーダー適用");
+                        attr.Add("战斗命令加成");
                     }
                 }
                 if (Skill.NotRemoved)
                 {
-                    attr.Add("バフ解除不可");
+                    attr.Add("无法解除增益");
                 }
                 if (Skill.MasterLevel > 0 && Skill.MasterLevel < Skill.MaxLevel)
                 {
-                    attr.Add("マスターリーブック未使用時のマスターレベル: Lv." + Skill.MasterLevel);
+                    attr.Add("未使用能手册时最大等级: Lv." + Skill.MasterLevel);
                 }
 
                 if (attr.Count > 0)
@@ -439,7 +439,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 foreach (string action in Skill.Action)
                 {
-                    skillDescEx.Add("#c[ディレイ] " + action + ": " + CharaSimLoader.GetActionDelay(action, this.wzNode) + " ms#");
+                    skillDescEx.Add("#c[技能延时] " + action + ": " + CharaSimLoader.GetActionDelay(action, this.wzNode) + " ms#");
                 }
             }
 
@@ -456,18 +456,18 @@ namespace WzComparerR2.CharaSimControl
                     {
                         skillName = kv.Key.ToString();
                     }
-                    skillDescEx.Add("#c[必要スキル] " + skillName + ": " + kv.Value + " 以上#");
+                    skillDescEx.Add("#c[前置技能] " + skillName + ": " + kv.Value + " 以上#");
                 }
             }
 
             if (Skill.LT.X != 0)
             {
 
-                skillDescEx.Add("#c[範囲座標] LT(左上): (" + Skill.LT.X + "," + Skill.LT.Y + ")" + " / " +
+                skillDescEx.Add("#c[范围坐标] LT(左上): (" + Skill.LT.X + "," + Skill.LT.Y + ")" + " / " +
                                             "RB(右下): (" + Skill.RB.X + "," + Skill.RB.Y + ")");
                 int LT = Math.Abs(Skill.LT.X) + Skill.RB.X;
                 int RB = Math.Abs(Skill.LT.Y) + Skill.RB.Y;
-                skillDescEx.Add("#c[範囲] " + LT + " x " + RB);
+                skillDescEx.Add("#c[范围] " + LT + " x " + RB);
 
             }
 
