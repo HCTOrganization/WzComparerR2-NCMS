@@ -9,7 +9,7 @@ namespace WzComparerR2
     {
         public static decimal Parse(string mathExpression, params decimal[] args)
         {
-            var tokens = Lexer(mathExpression);
+            var tokens = Lexer(ExcessiveBracketFilter(mathExpression));
             var inst = Suffix(tokens);
 
             var paramList = new Dictionary<string, object>();
@@ -30,7 +30,30 @@ namespace WzComparerR2
 
             return Execute(inst, new EvalContext(paramList));
         }
-
+        public static string ExcessiveBracketFilter(string expression)
+        {
+            string filteredExpression = expression;
+            int leftBracketQuantity = System.Text.RegularExpressions.Regex.Matches(expression, "[(]").Count;
+            int rightBracketQuantity = System.Text.RegularExpressions.Regex.Matches(expression, "[)]").Count;
+            int bracketQuantityDelta = rightBracketQuantity - leftBracketQuantity;
+            if (bracketQuantityDelta > 0)
+            {
+                while (bracketQuantityDelta > 0)
+                {
+                    filteredExpression = filteredExpression.Remove(filteredExpression.LastIndexOf(")"));
+                    bracketQuantityDelta--;
+                }
+            }
+            else if (bracketQuantityDelta < 0)
+            {
+                while (bracketQuantityDelta < 0)
+                {
+                    filteredExpression = filteredExpression.Remove(filteredExpression.IndexOf("("));
+                    bracketQuantityDelta++;
+                }
+            }
+            return filteredExpression;
+        }
         private static List<Token> Lexer(string expr)
         {
             var tokens = new List<Token>();
