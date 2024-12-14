@@ -103,7 +103,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.bdR: return "ボスモンスター攻撃時のダメージ +" + value + "%";
                 case GearPropType.incIMDR:
                 case GearPropType.imdR: return "モンスター防御率無視 : +" + value + "%";
-                case GearPropType.limitBreak: return "ダメージ上限: " + ToCJKNumberExpr(value);
+                case GearPropType.limitBreak: return "最大傷害上限: " + ToCJKNumberExpr(value);
                 case GearPropType.reduceReq: return "装着レベル減少： - " + value;
                 case GearPropType.nbdR: return "一般モンスター攻撃時のダメージ: +" + value + "%"; //KMST 1069
 
@@ -1101,7 +1101,7 @@ namespace WzComparerR2.CharaSim
             {
                 int part = value / 1_0000;
                 sb.Append(firstPart ? null : " ");
-                sb.AppendFormat("{0}万", part); // Korean: 만, TradChinese: 萬, SimpChinese+Japanese: 万
+                sb.AppendFormat("{0}萬", part); // Korean: 만, TradChinese: 萬, SimpChinese+Japanese: 万
                 value -= part * 1_0000;
                 firstPart = false;
             }

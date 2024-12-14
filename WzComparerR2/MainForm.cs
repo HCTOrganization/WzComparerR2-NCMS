@@ -2441,21 +2441,6 @@ namespace WzComparerR2
                     return;
                 }
             }
-            if (!WcR2Config.Default.NoPatcherPrompt)
-            {
-                DialogResult PatcherPromptResult = MessageBoxEx.Show("このゲームパッチャーは、JMSのV427アップデート以降は動作しません。\r\n" +
-                "JMSを更新するには、「ゲームをダウンロード」をクリックして、\r\n" +
-                "プロンプトが表示されたらゲームをインストールした場所を選択し、\r\n" +
-                "「ゲームスタート」ボタンをクリックしてゲームを更新してプレイしてください。\r\n" +
-                "JMS以外の公式キノコゲームクライアントにパッチを適用する場合は、この通知を無視しても問題ありません。\r\n\r\n" +
-                "「OK」をクリックすると、この通知は再度表示されなくなります。", "注意", MessageBoxButtons.OKCancel);
-                if (PatcherPromptResult == System.Windows.Forms.DialogResult.OK)
-                {
-                    ConfigManager.Reload();
-                    WcR2Config.Default.NoPatcherPrompt = true;
-                    ConfigManager.Save();
-                }
-            }
             FrmPatcher patcher = new FrmPatcher();
             var config = WcR2Config.Default;
             var defaultEnc = config?.WzEncoding?.Value ?? 0;
@@ -3702,10 +3687,10 @@ namespace WzComparerR2
             Process.Start(new ProcessStartInfo
             {
                 UseShellExecute = true,
-                FileName = "https://github.com/HikariCalyx/WzComparerR2-JMS/releases",
+                FileName = "https://github.com/HCTOrganization/WzComparerR2-NTMS/releases",
             });
 #else
-            Process.Start("https://github.com/HikariCalyx/WzComparerR2-JMS/releases");
+            Process.Start("https://github.com/HCTOrganization/WzComparerR2-NTMS/releases");
 #endif
         }
 
@@ -3730,14 +3715,14 @@ namespace WzComparerR2
                 {
                     form.Show();
                     form.BringToFront();
-                    MessageBoxEx.Show("終了する前にゲームパッチャーを閉じてください。", "注意", MessageBoxButtons.OK);
+                    MessageBoxEx.Show("退出前請關閉遊戲更新器。", "注意", MessageBoxButtons.OK);
                     e.Cancel = true;
                     return;
                 }
             }
             if (compareThread != null)
             {
-                if (DialogResult.Yes == MessageBoxEx.Show("比較が進行中です。 中絶しますか?", "注意", MessageBoxButtons.YesNo))
+                if (DialogResult.Yes == MessageBoxEx.Show("比較正在進行中。你想中止嗎？", "注意", MessageBoxButtons.YesNo))
                 {
                     compareThread.Interrupt();
                     compareThread = null;
@@ -3751,7 +3736,7 @@ namespace WzComparerR2
                     return;
                 }
             }
-            DialogResult result = MessageBoxEx.Show("是否確認退出?", "確認", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBoxEx.Show("是否確認退出？", "確認", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 e.Cancel = false;  //点击OK

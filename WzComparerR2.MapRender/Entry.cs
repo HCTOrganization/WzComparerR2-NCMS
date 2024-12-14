@@ -41,8 +41,8 @@ namespace WzComparerR2.MapRender
             bar.Items.Add(btnItemMapRender);
 #endif
 
-            this.bar2 = Context.AddRibbonBar("Modules", "マップレンダラー");
-            btnItemMapRenderV2 = new ButtonItem("", " レンダーマップ ");
+            this.bar2 = Context.AddRibbonBar("Modules", "地圖渲染器");
+            btnItemMapRenderV2 = new ButtonItem("", " 渲染地圖 ");
             btnItemMapRenderV2.Click += btnItem_Click;
             bar2.Items.Add(btnItemMapRenderV2);
 
@@ -61,7 +61,7 @@ namespace WzComparerR2.MapRender
                 {
                     if (wzFile == null || wzFile.Type != Wz_Type.Map)
                     {
-                        if (MessageBoxEx.Show("Map.wz から IMG ファイルを選択しませんでした。\r\n続行しますか？", "警告", MessageBoxButtons.OKCancel) != DialogResult.OK)
+                        if (MessageBoxEx.Show("您沒有從 Map.wz 選擇IMG檔案。 \r\n您想繼續嗎？", "警告", MessageBoxButtons.OKCancel) != DialogResult.OK)
                         {
                             goto exit;
                         }
@@ -145,7 +145,7 @@ namespace WzComparerR2.MapRender
                 }
             }
 
-            MessageBoxEx.Show("Map.wzからIMGを選択します。", "マップレンダラー");
+            MessageBoxEx.Show("從 Map.wz 中選擇 IMG。", "地圖渲染器");
 
         exit:
         return;

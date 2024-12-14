@@ -262,7 +262,7 @@
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(138, 16);
             this.labelX2.TabIndex = 7;
-            this.labelX2.Text = "WZのバージョン確認方法";
+            this.labelX2.Text = "WZ版本確認方式";
             // 
             // chkImgCheckDisabled
             // 
@@ -277,7 +277,7 @@
             this.chkImgCheckDisabled.Size = new System.Drawing.Size(212, 16);
             this.chkImgCheckDisabled.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkImgCheckDisabled.TabIndex = 6;
-            this.chkImgCheckDisabled.Text = "IMGチェックサム検証をスキップする";
+            this.chkImgCheckDisabled.Text = "跳過IMG校驗和驗證";
             // 
             // chkWzSortByImgID
             // 
@@ -292,7 +292,7 @@
             this.chkWzSortByImgID.Size = new System.Drawing.Size(180, 16);
             this.chkWzSortByImgID.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkWzSortByImgID.TabIndex = 5;
-            this.chkWzSortByImgID.Text = "IMGファイルごとに並べ替える";
+            this.chkWzSortByImgID.Text = "按IMG檔案排序";
             // 
             // chkAutoCheckExtFiles
             // 
@@ -307,7 +307,7 @@
             this.chkAutoCheckExtFiles.Size = new System.Drawing.Size(225, 16);
             this.chkAutoCheckExtFiles.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkAutoCheckExtFiles.TabIndex = 4;
-            this.chkAutoCheckExtFiles.Text = "分割されたWZファイルを自動検出する";
+            this.chkAutoCheckExtFiles.Text = "自動偵測分割的WZ文件";
             // 
             // cmbWzEncoding
             // 
@@ -334,7 +334,7 @@
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(84, 16);
             this.labelX1.TabIndex = 2;
-            this.labelX1.Text = "WZ符号化方式";
+            this.labelX1.Text = "WZ編碼方式";
             // 
             // chkWzAutoSort
             // 
@@ -349,7 +349,7 @@
             this.chkWzAutoSort.Size = new System.Drawing.Size(170, 16);
             this.chkWzAutoSort.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkWzAutoSort.TabIndex = 0;
-            this.chkWzAutoSort.Text = "WZファイルの自動並べ替え";
+            this.chkWzAutoSort.Text = "WZ檔案自動排序";
             // 
             // superTabItem1
             // 
@@ -392,7 +392,7 @@
             this.labelX3.Location = new System.Drawing.Point(14, 15);
             this.labelX3.Name = "labelX3";
             this.labelX3.TabIndex = 9;
-            this.labelX3.Text = "NX OpenAPIキー";
+            this.labelX3.Text = "NX OpenAPI金鑰";
             // 
             // labelX5
             // 

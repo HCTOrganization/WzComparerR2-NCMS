@@ -619,8 +619,8 @@ namespace WzComparerR2
             // 
             this.buttonItemAutoQuickView.AutoCheckOnClick = true;
             this.buttonItemAutoQuickView.Name = "buttonItemAutoQuickView";
-            this.buttonItemAutoQuickView.Text = "自動プレビュー";
-            this.buttonItemAutoQuickView.Tooltip = "自動プレビューのオン/オフ";
+            this.buttonItemAutoQuickView.Text = "自動預覽";
+            this.buttonItemAutoQuickView.Tooltip = "自動預覽開/關";
             this.buttonItemAutoQuickView.Click += new System.EventHandler(this.buttonItemAutoQuickView_Click);
             // 
             // buttonItemQuickViewSetting
@@ -648,7 +648,7 @@ namespace WzComparerR2
             this.buttonItemSetItems.Name = "buttonItemSetItems";
             this.buttonItemSetItems.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.itemContainer43});
-            this.buttonItemSetItems.Text = "アイテム管理";
+            this.buttonItemSetItems.Text = "道具管理";
             // 
             // itemContainer43
             // 
@@ -670,19 +670,19 @@ namespace WzComparerR2
             // buttonItemClearSetItems
             // 
             this.buttonItemClearSetItems.Name = "buttonItemClearSetItems";
-            this.buttonItemClearSetItems.Text = "アイテムセットを統合する";
+            this.buttonItemClearSetItems.Text = "道具合併集";
             this.buttonItemClearSetItems.Click += new System.EventHandler(this.buttonItemClearSetItems_Click);
             // 
             // buttonItemClearExclusiveEquips
             // 
             this.buttonItemClearExclusiveEquips.Name = "buttonItemClearExclusiveEquips";
-            this.buttonItemClearExclusiveEquips.Text = "重複しないアイテムを統合する";
+            this.buttonItemClearExclusiveEquips.Text = "整合非重複道具";
             this.buttonItemClearExclusiveEquips.Click += new System.EventHandler(this.buttonItemClearExclusiveEquips_Click);
             // 
             // buttonItemClearCommodities
             // 
             this.buttonItemClearCommodities.Name = "buttonItemClearCommodities";
-            this.buttonItemClearCommodities.Text = "現金アイテムを統合する";
+            this.buttonItemClearCommodities.Text = "整合現金道具";
             this.buttonItemClearCommodities.Click += new System.EventHandler(this.buttonItemClearCommodities_Click);
             // 
             // itemContainer28
@@ -720,8 +720,8 @@ namespace WzComparerR2
             // 
             this.buttonItemCharItem.AutoCheckOnClick = true;
             this.buttonItemCharItem.Name = "buttonItemCharItem";
-            this.buttonItemCharItem.Text = "インベントリ";
-            this.buttonItemCharItem.Tooltip = "インベントリウィンドウのオン/オフ";
+            this.buttonItemCharItem.Text = "道具背包";
+            this.buttonItemCharItem.Tooltip = "開啟/關閉道具背包窗口";
             this.buttonItemCharItem.CheckedChanged += new System.EventHandler(this.buttonItemCharItem_CheckedChanged);
             // 
             // itemContainer30
@@ -742,8 +742,8 @@ namespace WzComparerR2
             // 
             this.buttonItemCharaStat.AutoCheckOnClick = true;
             this.buttonItemCharaStat.Name = "buttonItemCharaStat";
-            this.buttonItemCharaStat.Text = "ステータス";
-            this.buttonItemCharaStat.Tooltip = "ステータスウィンドウのON/OFF";
+            this.buttonItemCharaStat.Text = "角色狀態";
+            this.buttonItemCharaStat.Tooltip = "開啟/關閉角色狀態窗口";
             this.buttonItemCharaStat.CheckedChanged += new System.EventHandler(this.buttonItemCharaStat_CheckedChanged);
             // 
             // itemContainer31
@@ -800,8 +800,8 @@ namespace WzComparerR2
             // buttonItemAddItem
             // 
             this.buttonItemAddItem.Name = "buttonItemAddItem";
-            this.buttonItemAddItem.Text = "アイテムの追加";
-            this.buttonItemAddItem.Tooltip = "選択したアイテムをインベントリウィンドウに追加します";
+            this.buttonItemAddItem.Text = "追加道具";
+            this.buttonItemAddItem.Tooltip = "將選定的道具新增至道具背包視窗";
             this.buttonItemAddItem.Click += new System.EventHandler(this.buttonItemAddItem_Click);
             // 
             // itemContainer34
@@ -850,7 +850,7 @@ namespace WzComparerR2
             this.ribbonBar3.Size = new System.Drawing.Size(262, 91);
             this.ribbonBar3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.ribbonBar3.TabIndex = 0;
-            this.ribbonBar3.Text = "音楽プレーヤー";
+            this.ribbonBar3.Text = "音樂播放器";
             // 
             // 
             // 
@@ -927,7 +927,7 @@ namespace WzComparerR2
             // checkBoxItemSoundLoop
             // 
             this.checkBoxItemSoundLoop.Name = "checkBoxItemSoundLoop";
-            this.checkBoxItemSoundLoop.Text = "ループ";
+            this.checkBoxItemSoundLoop.Text = "循環";
             this.checkBoxItemSoundLoop.CheckedChanged += new DevComponents.DotNetBar.CheckBoxChangeEventHandler(this.checkBoxItemSoundLoop_CheckedChanged);
             // 
             // itemContainer18
@@ -973,14 +973,14 @@ namespace WzComparerR2
             // 
             this.buttonItemLoadSound.Image = global::WzComparerR2.Properties.Resources.Open;
             this.buttonItemLoadSound.Name = "buttonItemLoadSound";
-            this.buttonItemLoadSound.Text = "ファイルを開く";
+            this.buttonItemLoadSound.Text = "開啟檔案";
             this.buttonItemLoadSound.Click += new System.EventHandler(this.buttonItemLoadSound_Click);
             // 
             // buttonItemSoundPlay
             // 
             this.buttonItemSoundPlay.Image = global::WzComparerR2.Properties.Resources.Play;
             this.buttonItemSoundPlay.Name = "buttonItemSoundPlay";
-            this.buttonItemSoundPlay.Text = "再生";
+            this.buttonItemSoundPlay.Text = "播放";
             this.buttonItemSoundPlay.Click += new System.EventHandler(this.buttonItemSoundPlay_Click);
             // 
             // buttonItemSoundStop
@@ -1117,6 +1117,7 @@ namespace WzComparerR2
             this.buttonItemInstallGame.Name = "buttonItemInstallGame";
             this.buttonItemInstallGame.SubItemsExpandWidth = 16;
             this.buttonItemInstallGame.Text = "下載遊戲";
+            this.buttonItemInstallGame.Enabled = false;
             this.buttonItemInstallGame.Click += new System.EventHandler(this.buttonInstallGame_Click);
             // 
             // buttonItemGameStart
@@ -1124,6 +1125,7 @@ namespace WzComparerR2
             this.buttonItemGameStart.Name = "buttonItemGameStart";
             this.buttonItemGameStart.SubItemsExpandWidth = 16;
             this.buttonItemGameStart.Text = "開始遊戲";
+            this.buttonItemGameStart.Enabled = false;
             this.buttonItemGameStart.Click += new System.EventHandler(this.buttonGameStart_Click);
             // 
             // ribbonBar4

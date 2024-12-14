@@ -33,22 +33,22 @@ namespace WzComparerR2.CharaSimControl
             TBrushes["w"] = new TextureBrush(Resource.UIToolTip_img_Item_Frame2_w, WrapMode.Tile);
             TBrushes["nw"] = new TextureBrush(Resource.UIToolTip_img_Item_Frame2_nw, WrapMode.Clamp);
             TBrushes["c"] = new TextureBrush(Resource.UIToolTip_img_Item_Frame2_c, WrapMode.Tile);
-            SetFontFamily("MS Gothic");
+            SetFontFamily("SimSun");
         }
 
         public static readonly Dictionary<string, TextureBrush> TBrushes;
-        public static readonly Font ItemNameFont = new Font("MS Gothic", 14f, FontStyle.Bold, GraphicsUnit.Pixel);
-        public static readonly Font ItemDetailFont = new Font("MS Gothic", 12f, GraphicsUnit.Pixel);
-        public static readonly Font LevelBoldFont = new Font("MS Gothic", 12f, FontStyle.Bold, GraphicsUnit.Pixel);
-        public static readonly Font JMSKunshoFont = new Font("MS PGothic", 12f, GraphicsUnit.Pixel);
-        public static readonly Font EquipDetailFont = new Font("MS Gothic", 11f, GraphicsUnit.Pixel);
-        public static readonly Font EpicGearDetailFont = new Font("MS Gothic", 11f, GraphicsUnit.Pixel);
+        public static readonly Font ItemNameFont = new Font("SimSun", 14f, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static readonly Font ItemDetailFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+        public static readonly Font LevelBoldFont = new Font("SimSun", 12f, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static readonly Font JMSKunshoFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+        public static readonly Font EquipDetailFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+        public static readonly Font EpicGearDetailFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
         public static readonly Font TahomaFont = new Font("Tahoma", 12f, GraphicsUnit.Pixel);
-        public static readonly Font SetItemPropFont = new Font("MS Gothic", 11f, GraphicsUnit.Pixel);
-        public static readonly Font ItemReqLevelFont = new Font("MS Gothic", 11f, GraphicsUnit.Pixel);
-        public static readonly Font KMSItemNameFont = new Font("Dotum", 14f, FontStyle.Bold, GraphicsUnit.Pixel);
-        public static readonly Font KMSItemDetailFont = new Font("Dotum", 12f, GraphicsUnit.Pixel);
-        public static readonly Font KMSItemDetailFont2 = new Font("Dotum", 11f, GraphicsUnit.Pixel);
+        public static readonly Font SetItemPropFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+        public static readonly Font ItemReqLevelFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+        public static readonly Font KMSItemNameFont = new Font("SimSun", 14f, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static readonly Font KMSItemDetailFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+        public static readonly Font KMSItemDetailFont2 = new Font("SimSun", 12f, GraphicsUnit.Pixel);
 
         public static Font ItemNameFont2 { get; private set; }
         public static Font ItemDetailFont2 { get; private set; }
@@ -68,14 +68,14 @@ namespace WzComparerR2.CharaSimControl
                 ItemDetailFont2.Dispose();
                 ItemDetailFont2 = null;
             }
-            ItemDetailFont2 = new Font(fontName, 11f, GraphicsUnit.Pixel);
+            ItemDetailFont2 = new Font(fontName, 12f, GraphicsUnit.Pixel);
 
             if (EquipDetailFont2 != null)
             {
                 EquipDetailFont2.Dispose();
                 EquipDetailFont2 = null;
             }
-            EquipDetailFont2 = new Font(fontName, 11f, GraphicsUnit.Pixel);
+            EquipDetailFont2 = new Font(fontName, 12f, GraphicsUnit.Pixel);
         }
 
         public static readonly Color GearBackColor = Color.FromArgb(204, 0, 51, 85);
