@@ -1,6 +1,7 @@
 # WzComparerR2-JMS
 - これは、JMS 用に設計されたメイプルストーリー抽出ツールです。
 - KMS、GMS、CMS などの他のクライアントで動作します。
+- このツールは、WZ ファイルの編集をサポートしていません。
 
 # Modules
 - **WzComparerR2** 主程序
@@ -16,6 +17,24 @@
 
 # Usage
 - **2.x**: Win7+/.net4.8+/dx11.0
+
+# 翻訳機能
+- WzComparerR2-JMS v5.6.0 以降では、翻訳機能が導入されました。
+- 以下の翻訳エンジンと連携します: Google、DeepL、DuckDuckGo/Bing、MyMemory、Yandex、Naver Papago。
+
+### Mozhiサーバー
+Mozhi は、公開されている API を備えた、多くの翻訳エンジンの代替フロントエンドです。[Mozhi プロジェクトの詳細については、こちらをご覧ください。](https://mozhi.aryak.me/about)
+
+### Naver Papago
+韓国語のテキストの翻訳に関しては、Naver Papago はすべての翻訳エンジンの中で比較的最高の結果を達成しています。ただし、Naver Papago を使用するには API キーが必要です。[API キーはここからリクエストできます。](https://guide.ncloud-docs.com/docs/ja/papagotranslation-api)
+
+API キーを取得したら、次のように JSON 形式で「翻訳APIキー」テキストボックスに入力してください:
+```
+{
+    "X-NCP-APIGW-API-KEY-ID": "APIキーIDに置き換えてください",
+    "X-NCP-APIGW-API-KEY": "APIキーに置き換えてください"
+]
+```
 
 # NX OpenAPI
 - [API キーを取得する方法については、こちらをご覧ください。](https://openapi.nexon.com/guide/prepare-in-advance/)
@@ -41,8 +60,17 @@
 https://open.api.nexon.com/static/maplestory/ItemIcon/KEHCJAIG.png
 ```
 
-# Compile
-- vs2022 or higher/.net 6 SDK
+# About Kinoko Game (キノコゲーム) Section
+
+Since JMS v427 the old patch server is abandoned. Now the game can be only run with Nexon Game Manager. To make the entire procedure easier for new players, Download Game (ゲームをダウンロード) and Game Start (ゲームスタート) buttons were added as of WzComparerR2-JMS v5.5.0.
+
+If you see message says You'll need a new app to open this ngm link, please download Nexon Game Manager from either [KMS official website](https://maplestory.nexon.com/Common/PDS/Download) or [JMS official website](https://maplestory.nexon.co.jp).
+
+# コンパイル
+- GitHub Desktop を使用してこのリポジトリをクローンします。
+- [Visual Studio 2022 Community](https://visualstudio.microsoft.com/downloads/) を使用して WzComparerR2.sln を開きます。
+- [ビルド] - [ソリューションのビルド] を選択してコンパイルします。
+- ビルドは WzComparerR2\bin\Release ディレクトリにあります。
 
 # Credits
 - **Fiel** ([Southperry](http://www.southperry.net))  wz文件读取代码改造自WzExtract 以及WzPatcher

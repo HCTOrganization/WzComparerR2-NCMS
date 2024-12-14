@@ -35,5 +35,19 @@ namespace WzComparerR2.Config
             get { return (bool)this["showNickTag"]; }
             set { this["showNickTag"] = value; }
         }
+
+        [ConfigurationProperty("showSoldPrice", DefaultValue = true)]
+        public bool ShowSoldPrice
+        {
+            get { return (bool)this["showSoldPrice"]; }
+            set { this["showSoldPrice"] = value; }
+        }
+
+        [ConfigurationProperty("showCashPurchasePrice", DefaultValue = true)]
+        public bool ShowCashPurchasePrice
+        {
+            get { return (bool)this["showCashPurchasePrice"]; }
+            set { this["showCashPurchasePrice"] = value; }
+        }
     }
 }

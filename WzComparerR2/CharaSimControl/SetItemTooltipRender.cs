@@ -103,7 +103,14 @@ namespace WzComparerR2.CharaSimControl
             var fmtItemType = new StringFormat() { Alignment = StringAlignment.Far };
 
             picHeight = 10;
-            TextRenderer.DrawText(g, this.SetItem.SetItemName, GearGraphics.EquipDetailFont2, new Point(261, 10), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.HorizontalCenter);//default value is '261' - Used for set name centered in set effect tooltip window
+            if (Translator.IsKoreanStringPresent(this.SetItem.SetItemName))
+            {
+                TextRenderer.DrawText(g, this.SetItem.SetItemName, GearGraphics.KMSItemDetailFont, new Point(261, 10), ((SolidBrush)GearGraphics.JMSGreenBrush).Color, TextFormatFlags.HorizontalCenter);
+            }
+            else
+            {
+                TextRenderer.DrawText(g, this.SetItem.SetItemName, GearGraphics.ItemDetailFont2, new Point(261, 10), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.HorizontalCenter);//default value is '261' - Used for set name centered in set effect tooltip window   
+            }
             picHeight += 25;
 
             format.Alignment = StringAlignment.Far;
@@ -210,7 +217,7 @@ namespace WzComparerR2.CharaSimControl
                     }
 
                     itemName = itemName ?? string.Empty;
-                    typeName = typeName ?? "Equip";
+                    typeName = typeName ?? "装備";
 
                     if (!Regex.IsMatch(typeName, @"^(\(.*\)|（.*）|\[.*\])$"))
                     {
@@ -235,7 +242,14 @@ namespace WzComparerR2.CharaSimControl
                             //picHeight += 18;
                             int typeWidth = TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
                             TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(261 - 10 - typeWidth, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            TextRenderer.DrawText(g, Compact(g, itemName, 261 - 12 - typeWidth - 10), GearGraphics.EquipDetailFont2, new Point(10, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            if (Translator.IsKoreanStringPresent(itemName))
+                            {
+                                TextRenderer.DrawText(g, Compact(g, itemName, 261 - 12 - typeWidth - 10), GearGraphics.KMSItemDetailFont2, new Point(10, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            }
+                            else
+                            {
+                                TextRenderer.DrawText(g, Compact(g, itemName, 261 - 12 - typeWidth - 10), GearGraphics.EquipDetailFont2, new Point(10, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            }
                             picHeight += 18;
                         }
                         else
@@ -252,7 +266,14 @@ namespace WzComparerR2.CharaSimControl
                             //TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(261 - 10 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
                             int typeWidth = TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
                             TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(261 - 10 - typeWidth, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            TextRenderer.DrawText(g, Compact(g, itemName, 261 - 10 - typeWidth - 52), GearGraphics.EquipDetailFont2, new Point(52, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            if (Translator.IsKoreanStringPresent(itemName))
+                            {
+                                TextRenderer.DrawText(g, Compact(g, itemName, 261 - 10 - typeWidth - 52), GearGraphics.KMSItemDetailFont2, new Point(10, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            }
+                            else
+                            {
+                                TextRenderer.DrawText(g, Compact(g, itemName, 261 - 10 - typeWidth - 52), GearGraphics.EquipDetailFont2, new Point(52, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            }
                             if (setItemPart.Value.ByGender)
                             {
                                 picHeight += 18;
@@ -295,7 +316,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 for (int i = 0; i < this.SetItem.CompleteCount; ++i)
                 {
-                    TextRenderer.DrawText(g, "(None)", GearGraphics.EquipDetailFont2, new Point(10, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+                    TextRenderer.DrawText(g, "(なし)", GearGraphics.EquipDetailFont2, new Point(10, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
                     TextRenderer.DrawText(g, "未装備", GearGraphics.EquipDetailFont2, new Point(252 - TextRenderer.MeasureText(g, "未装備", GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding);
                     picHeight += 18;
                 }
@@ -377,17 +398,19 @@ namespace WzComparerR2.CharaSimControl
                 string effTitle;
                 if (this.SetItem.SetItemID < 0)
                 {
-                    effTitle = $"Active Within World({effect.Key} / {this.SetItem.CompleteCount})";
+                    effTitle = $"ワールド内重複装備効果({effect.Key} / {this.SetItem.CompleteCount})";
+                    TextRenderer.DrawText(g, effTitle, GearGraphics.ItemDetailFont2, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
                 }
                 else if (specialPetSetEffectName && this.SetItem.SetItemName.EndsWith("セット"))
                 {
                     effTitle = $"{Regex.Replace(this.SetItem.SetItemName, "セット$", "")} {effect.Key}セット効果";
+                    TextRenderer.DrawText(g, effTitle, GearGraphics.ItemDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.JMSGreenBrush).Color, TextFormatFlags.NoPadding);
                 }
                 else
                 {
                     effTitle = effect.Key + "セット効果";
+                    TextRenderer.DrawText(g, effTitle, GearGraphics.ItemDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.JMSGreenBrush).Color, TextFormatFlags.NoPadding);
                 }
-                TextRenderer.DrawText(g, effTitle, GearGraphics.ItemDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.JMSGreenBrush).Color, TextFormatFlags.NoPadding);
                 picHeight += 15;
                 //Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
                 var color = effect.Value.Enabled ? Color.White : GearGraphics.GrayColor2;
@@ -401,7 +424,14 @@ namespace WzComparerR2.CharaSimControl
                         List<Potential> ops = (List<Potential>)prop.Value;
                         foreach (Potential p in ops)
                         {
-                            GearGraphics.DrawString(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, new Dictionary<string, Color>() { { string.Empty, color } }, 10, 244, ref picHeight, 15);
+                            if (Translator.IsKoreanStringPresent(p.ConvertSummary()))
+                            {
+                                GearGraphics.DrawString(g, p.ConvertSummary(), GearGraphics.KMSItemDetailFont2, new Dictionary<string, Color>() { { string.Empty, color } }, 10, 244, ref picHeight, 15);
+                            }
+                            else
+                            {
+                                GearGraphics.DrawString(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, new Dictionary<string, Color>() { { string.Empty, color } }, 10, 244, ref picHeight, 15);
+                            }
                         }
                     }
                     else if (prop.Key == GearPropType.OptionToMob)
@@ -433,7 +463,7 @@ namespace WzComparerR2.CharaSimControl
                         var ops = (List<SetItemBonusByTime>)prop.Value;
                         foreach (SetItemBonusByTime p in ops)
                         {
-                            GearGraphics.DrawPlainText(g, $"{p.TermStart} Hr Effect", GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                            GearGraphics.DrawPlainText(g, $"{p.TermStart}時間効果", GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                             foreach (var bonusProp in p.Props)
                             {
                                 var summary = ItemStringHelper.GetGearPropString(bonusProp.Key, Convert.ToInt32(bonusProp.Value));

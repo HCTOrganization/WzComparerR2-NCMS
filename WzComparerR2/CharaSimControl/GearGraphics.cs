@@ -33,19 +33,22 @@ namespace WzComparerR2.CharaSimControl
             TBrushes["w"] = new TextureBrush(Resource.UIToolTip_img_Item_Frame2_w, WrapMode.Tile);
             TBrushes["nw"] = new TextureBrush(Resource.UIToolTip_img_Item_Frame2_nw, WrapMode.Clamp);
             TBrushes["c"] = new TextureBrush(Resource.UIToolTip_img_Item_Frame2_c, WrapMode.Tile);
-            SetFontFamily("SimSun");
+            SetFontFamily("MS Gothic");
         }
 
         public static readonly Dictionary<string, TextureBrush> TBrushes;
-        public static readonly Font ItemNameFont = new Font("SimSun", 14f, FontStyle.Bold, GraphicsUnit.Pixel);
-        public static readonly Font ItemDetailFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
-        public static readonly Font LevelBoldFont = new Font("SimSun", 12f, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static readonly Font ItemNameFont = new Font("MS Gothic", 14f, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static readonly Font ItemDetailFont = new Font("MS Gothic", 12f, GraphicsUnit.Pixel);
+        public static readonly Font LevelBoldFont = new Font("MS Gothic", 12f, FontStyle.Bold, GraphicsUnit.Pixel);
         public static readonly Font JMSKunshoFont = new Font("MS PGothic", 12f, GraphicsUnit.Pixel);
-        public static readonly Font EquipDetailFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
-        public static readonly Font EpicGearDetailFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+        public static readonly Font EquipDetailFont = new Font("MS Gothic", 11f, GraphicsUnit.Pixel);
+        public static readonly Font EpicGearDetailFont = new Font("MS Gothic", 11f, GraphicsUnit.Pixel);
         public static readonly Font TahomaFont = new Font("Tahoma", 12f, GraphicsUnit.Pixel);
-        public static readonly Font SetItemPropFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
-        public static readonly Font ItemReqLevelFont = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+        public static readonly Font SetItemPropFont = new Font("MS Gothic", 11f, GraphicsUnit.Pixel);
+        public static readonly Font ItemReqLevelFont = new Font("MS Gothic", 11f, GraphicsUnit.Pixel);
+        public static readonly Font KMSItemNameFont = new Font("Dotum", 14f, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static readonly Font KMSItemDetailFont = new Font("Dotum", 12f, GraphicsUnit.Pixel);
+        public static readonly Font KMSItemDetailFont2 = new Font("Dotum", 11f, GraphicsUnit.Pixel);
 
         public static Font ItemNameFont2 { get; private set; }
         public static Font ItemDetailFont2 { get; private set; }
@@ -58,21 +61,21 @@ namespace WzComparerR2.CharaSimControl
                 ItemNameFont2.Dispose();
                 ItemNameFont2 = null;
             }
-            ItemNameFont2 = new Font("SimSun", 14f, FontStyle.Bold, GraphicsUnit.Pixel);
+            ItemNameFont2 = new Font(fontName, 14f, FontStyle.Bold, GraphicsUnit.Pixel);
 
             if (ItemDetailFont2 != null)
             {
                 ItemDetailFont2.Dispose();
                 ItemDetailFont2 = null;
             }
-            ItemDetailFont2 = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+            ItemDetailFont2 = new Font(fontName, 11f, GraphicsUnit.Pixel);
 
             if (EquipDetailFont2 != null)
             {
                 EquipDetailFont2.Dispose();
                 EquipDetailFont2 = null;
             }
-            EquipDetailFont2 = new Font("SimSun", 12f, GraphicsUnit.Pixel);
+            EquipDetailFont2 = new Font(fontName, 11f, GraphicsUnit.Pixel);
         }
 
         public static readonly Color GearBackColor = Color.FromArgb(204, 0, 51, 85);
@@ -114,7 +117,8 @@ namespace WzComparerR2.CharaSimControl
         /// <summary>
         /// 表示装备属性额外说明中使用的卷轴强化数值画刷。
         /// </summary>
-        public static readonly Brush ScrollEnhancementBrush = new SolidBrush(Color.FromArgb(170, 170, 255));
+        public static readonly Color ScrollEnhancementColor = Color.FromArgb(175, 173, 255);
+        public static readonly Brush ScrollEnhancementBrush = new SolidBrush(ScrollEnhancementColor);
         /// <summary>
         /// 表示用于绘制“攻击力提升”文字的灰色画刷。
         /// </summary>
@@ -127,6 +131,10 @@ namespace WzComparerR2.CharaSimControl
         /// 表示套装属性不可用的灰色画刷。
         /// </summary>
         public static readonly Brush SetItemGrayBrush = new SolidBrush(Color.FromArgb(119, 136, 153));
+        /// <summary>
+        /// 表示效果不可用的红色画刷。
+        /// </summary>
+        public static readonly Brush BlockRedBrush = new SolidBrush(Color.FromArgb(255, 0, 102));
         /// <summary>
         /// 表示装备tooltip中金锤子描述文字的颜色画刷。
         /// </summary>
@@ -254,7 +262,7 @@ namespace WzComparerR2.CharaSimControl
             DrawString(g, s, font, null, x, x1, ref y, height);
         }
 
-        public static void DrawString(Graphics g, string s, Font font, IDictionary<string, Color> fontColorTable, int x, int x1, ref int y, int height)
+        public static void DrawString(Graphics g, string s, Font font, IDictionary<string, Color> fontColorTable, int x, int x1, ref int y, int height, bool isCenterAlignment=false)
         {
             if (s == null)
                 return;
@@ -489,53 +497,87 @@ namespace WzComparerR2.CharaSimControl
             }).ToArray();
 
             Color color = Color.FromArgb(resNode.FindNodeByPath("clr").GetValueEx(-1));
+            BitmapOrigin ani0 = default;
+            Wz_Node ani0Node = resNode.FindNodeByPath(false, "ani", "0");
+            if (ani0Node != null)
+            {
+                ani0 = BitmapOrigin.CreateFromNode(ani0Node, PluginBase.PluginManager.FindWz);
+            }
 
             //测试y轴大小
             int offsetY = wce.Min(bmp => bmp.OpOrigin.Y);
             int height = wce.Max(bmp => bmp.Rectangle.Bottom);
 
             //测试宽度
-            var font = GearGraphics.ItemDetailFont2;
+            var font = GearGraphics.JMSKunshoFont;
             var fmt = StringFormat.GenericTypographic;
-            //int width = string.IsNullOrEmpty(tagName) ? 0 : (int)Math.Ceiling(g.MeasureString(tagName, font, 261, fmt).Width);
-            int width = string.IsNullOrEmpty(tagName) ? 0 : TextRenderer.MeasureText(g, tagName, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
-            if (wce[1].Bitmap != null)
-            {
-                width = (int)Math.Ceiling(1.0 * width / wce[1].Bitmap.Width) * wce[1].Bitmap.Width;
-            }
-            int left = picW / 2 - width / 2;
-            int right = left + width;
+            int nameWidth = string.IsNullOrEmpty(tagName) ? 0 : (int)Math.Ceiling(g.MeasureString(tagName, font, 261, fmt).Width);
+            int center = picW / 2;
 
-            //开始绘制背景
-            picH -= offsetY;
-            if (wce[0].Bitmap != null)
+            if (ani0.Bitmap == null) // legacy mode
             {
-                g.DrawImage(wce[0].Bitmap, left - wce[0].Origin.X, picH - wce[0].Origin.Y);
-            }
-            if (wce[1].Bitmap != null) //不用拉伸 用纹理平铺 看运气
-            {
-                var brush = new TextureBrush(wce[1].Bitmap);
-                Rectangle rect = new Rectangle(left, picH - wce[1].Origin.Y, right - left, brush.Image.Height);
-                brush.TranslateTransform(rect.X, rect.Y);
-                g.FillRectangle(brush, rect);
-                brush.Dispose();
-            }
-            if (wce[2].Bitmap != null)
-            {
-                g.DrawImage(wce[2].Bitmap, right - wce[2].Origin.X, picH - wce[2].Origin.Y);
-            }
+                int left = center - nameWidth / 2;
+                int right = left + nameWidth;
 
-            //绘制文字
-            if (!string.IsNullOrEmpty(tagName))
+                //开始绘制背景
+                picH -= offsetY;
+                if (wce[0].Bitmap != null)
+                {
+                    g.DrawImage(wce[0].Bitmap, left - wce[0].Origin.X, picH - wce[0].Origin.Y);
+                }
+                if (wce[1].Bitmap != null) //不用拉伸 用纹理平铺 看运气
+                {
+                    var brush = new TextureBrush(wce[1].Bitmap);
+                    Rectangle rect = new Rectangle(left, picH - wce[1].Origin.Y, right - left, brush.Image.Height);
+                    brush.TranslateTransform(rect.X, rect.Y);
+                    g.FillRectangle(brush, rect);
+                    brush.Dispose();
+                }
+                if (wce[2].Bitmap != null)
+                {
+                    g.DrawImage(wce[2].Bitmap, right - wce[2].Origin.X, picH - wce[2].Origin.Y);
+                }
+
+                //绘制文字
+                if (!string.IsNullOrEmpty(tagName))
+                {
+                    using var brush = new SolidBrush(color);
+                    g.DrawString(tagName, font, brush, left, picH, fmt);
+                }
+            }
+            else // ani mode
             {
-                var brush = new SolidBrush(color);
-                //g.DrawString(tagName, font, brush, left, picH, fmt);
-                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                //TextRenderer.DrawText(g, tagName, font, new Point(left, picH - 2), color, TextFormatFlags.NoPadding);2 juni
-                TextRenderer.DrawText(g, tagName, font, new Rectangle(left, picH, right - left, int.MaxValue), color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPadding);
-                //TextRenderer.DrawText(g, tagName, font, new Rectangle(left, picH, right - left, int.MaxValue), color, TextFormatFlags.NoPadding);
-                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-                brush.Dispose();
+                bool mixedAniMode = wce[1].Bitmap != null && (wce[1].Bitmap.Width > 1 || wce[1].Bitmap.Height > 1);
+
+                offsetY = Math.Min(offsetY, ani0.OpOrigin.Y);
+                height = Math.Max(height, ani0.Rectangle.Bottom);
+
+                int bgWidth = mixedAniMode ? wce[1].Bitmap.Width : nameWidth;
+                int left = center - bgWidth / 2;
+                int right = left + bgWidth;
+                int nameLeft = center - nameWidth / 2;
+
+                picH -= offsetY;
+
+                if (mixedAniMode)
+                {
+                    // draw legay center
+                    // Note: item 1143360 (MILESTONE) does not render well, ignore it.
+                    g.DrawImage(wce[1].Bitmap, left - wce[1].Origin.X, picH - wce[1].Origin.Y);
+                    // draw ani0 based on bg center position
+                    g.DrawImage(ani0.Bitmap, left - wce[1].Origin.X - ani0.Origin.X, picH - wce[1].Origin.Y - ani0.Origin.Y);
+                    if (!string.IsNullOrEmpty(tagName)) // draw name
+                    {
+                        using var brush = new SolidBrush(color);
+                        // offsetX with bg for better alignment
+                        g.DrawString(tagName, font, brush, nameLeft - wce[1].Origin.X, picH, fmt);
+                    }
+                }
+                else
+                {
+                    // draw ani0 only
+                    g.DrawImage(ani0.Bitmap, left - ani0.Origin.X, picH - ani0.Origin.Y);
+                }
             }
 
             picH += height;
@@ -727,8 +769,6 @@ namespace WzComparerR2.CharaSimControl
                     switch (colorID)
                     {
                         case "c": color = GearGraphics.OrangeBrushColor; break;
-                        case "g": color = GearGraphics.gearGreenColor; break;
-                        case "$": color = GearGraphics.gearCyanColor; break;
                         default: color = this.defaultColor; break;
                     }
                 }

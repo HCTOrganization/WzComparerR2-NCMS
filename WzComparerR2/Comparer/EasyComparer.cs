@@ -22,6 +22,7 @@ namespace WzComparerR2.Comparer
             this.Comparer = new WzFileComparer();
         }
         private Wz_Node[] WzNewOld { get; set; } = new Wz_Node[2];
+        private Wz_File[] WzFileNewOld { get; set; } = new Wz_File[2];
         private Wz_File[] StringWzNewOld { get; set; } = new Wz_File[2];
         private Wz_File[] ItemWzNewOld { get; set; } = new Wz_File[2];
         private Wz_File[] EtcWzNewOld { get; set; } = new Wz_File[2];
@@ -81,7 +82,7 @@ namespace WzComparerR2.Comparer
 
         public void EasyCompareWzFiles(Wz_File fileNew, Wz_File fileOld, string outputDir, StreamWriter index = null)
         {
-            StateInfo = "Comparing...";
+            StateInfo = "比較中...";
 
             if ((fileNew.Type == Wz_Type.Base || fileOld.Type == Wz_Type.Base) && index == null) //至少有一个base 拆分对比
             {
@@ -94,6 +95,8 @@ namespace WzComparerR2.Comparer
                 {
                     this.WzNewOld[0] = fileNew.Node;
                     this.WzNewOld[1] = fileOld.Node;
+                    this.WzFileNewOld[0] = fileNew.Node.GetNodeWzFile();
+                    this.WzFileNewOld[1] = fileOld.Node.GetNodeWzFile();
                 }
 
 
@@ -348,8 +351,8 @@ namespace WzComparerR2.Comparer
 
             FileStream htmlFile = null;
             StreamWriter sw = null;
-            StateInfo = "Creating" + type;
-            StateDetail = "Creating output files";
+            StateInfo = type + "を作成しています...";
+            StateDetail = "出力ファイルを作成しています...";
             try
             {
                 htmlFile = new FileStream(htmlFilePath, FileMode.Create, FileAccess.Write);
@@ -432,7 +435,7 @@ namespace WzComparerR2.Comparer
                     sb[idx].AppendLine("</td></tr>");
                     count[idx]++;
                 }
-                StateDetail = "Creating a table of contents";
+                StateDetail = "目次を作成しています";
                 Array.Copy(count, 0, count, 3, 3);
                 for (int i = 0; i < sb.Length; i++)
                 {
@@ -543,12 +546,12 @@ namespace WzComparerR2.Comparer
                 {
                     Directory.CreateDirectory(skillTooltipPath);
                 }
-                SaveTooltip(skillTooltipPath);
+                SaveSkillTooltip(skillTooltipPath);
             }
         }
 
-        // 변경된 스킬 툴팁 출력
-        private void SaveTooltip(string skillTooltipPath)
+        // 変更されたスキルツールチップ出力
+        private void SaveSkillTooltip(string skillTooltipPath)
         {
             SkillTooltipRender2[] skillRenderNewOld = new SkillTooltipRender2[2];
             int count = 0;
@@ -566,7 +569,6 @@ namespace WzComparerR2.Comparer
                 skillRenderNewOld[i].StringLinker.Load(StringWzNewOld[i], ItemWzNewOld[i], EtcWzNewOld[i]);
                 skillRenderNewOld[i].ShowObjectID = true;
                 skillRenderNewOld[i].ShowDelay = true;
-                skillRenderNewOld[i].DoSetDiffColor = true;
                 skillRenderNewOld[i].wzNode = WzNewOld[i];
                 skillRenderNewOld[i].DiffSkillTags = this.DiffSkillTags;
                 skillRenderNewOld[i].IgnoreEvalError = true;
@@ -574,63 +576,101 @@ namespace WzComparerR2.Comparer
 
             foreach (var skillID in OutputSkillTooltipIDs)
             {
-                StateInfo = string.Format("{0}/{1} 技能: {2}", ++count, allCount, skillID);
-                StateDetail = "正在将技能改动输出到工具提示图像...";
+                StateInfo = string.Format("{0}/{1} スキル: {2}", ++count, allCount, skillID);
+                StateDetail = "Skill 変更点をツールチップ画像に出力中...";
 
-                Bitmap[] skillImageNewOld = { null, null };
-                string skillType = "删除";
+                string skillType = "";
                 string skillNodePath = int.Parse(skillID) / 10000000 == 8 ? String.Format(@"\{0:D}.img\skill\{1:D}", int.Parse(skillID) / 100, skillID) : String.Format(@"\{0:D}.img\skill\{1:D}", int.Parse(skillID) / 10000, skillID);
                 if (int.Parse(skillID) / 10000 == 0) skillNodePath = String.Format(@"\000.img\skill\{0:D7}", skillID);
-                int[] heightNewOld = { 0, 0 };
-                int width = 0;
-
-                // 변경 전후 툴팁 이미지 생성
-                for (int i = 0; i < 2; i++)
+                StringResult sr;
+                string skillName;
+                if (skillRenderNewOld[1].StringLinker == null || !skillRenderNewOld[1].StringLinker.StringSkill.TryGetValue(int.Parse(skillID), out sr))
                 {
-                    Skill skill = Skill.CreateFromNode(PluginManager.FindWz("Skill" + skillNodePath, WzNewOld[i].GetNodeWzFile()), PluginManager.FindWz, WzNewOld[i]?.GetNodeWzFile()) ??
-                        (Skill.CreateFromNode(PluginManager.FindWz("Skill001" + skillNodePath, WzNewOld[i].GetNodeWzFile()), PluginManager.FindWz, WzNewOld[i]?.GetNodeWzFile()) ??
-                        (Skill.CreateFromNode(PluginManager.FindWz("Skill002" + skillNodePath, WzNewOld[i].GetNodeWzFile()), PluginManager.FindWz, WzNewOld[i]?.GetNodeWzFile()) ??
-                        Skill.CreateFromNode(PluginManager.FindWz("Skill003" + skillNodePath, WzNewOld[i].GetNodeWzFile()), PluginManager.FindWz, WzNewOld[i]?.GetNodeWzFile())));
+                    sr = new StringResultSkill();
+                    sr.Name = "未知のスキル";
+                }
+                skillName = sr.Name;
+                if (skillRenderNewOld[0].StringLinker == null || !skillRenderNewOld[0].StringLinker.StringSkill.TryGetValue(int.Parse(skillID), out sr))
+                {
+                    sr = new StringResultSkill();
+                    sr.Name = "未知のスキル";
+                }
+                if (skillName != sr.Name && skillName != "未知のスキル" && sr.Name != "未知のスキル")
+                {
+                    skillName += "_" + sr.Name;
+                }
+                else if (skillName == "未知のスキル")
+                {
+                    skillName = sr.Name;
+                }
+                skillName = RemoveInvalidFileNameChars(skillName);
+                int nullSkillIdx = 0;
+
+                // 変更前後のツールチップ画像の作成
+                for (int i = 0; i < 2; i++) // 0: New, 1: Old
+                {
+                    Skill skill = Skill.CreateFromNode(PluginManager.FindWz("Skill" + skillNodePath, WzFileNewOld[i]), PluginManager.FindWz, WzFileNewOld[i]) ??
+                        (Skill.CreateFromNode(PluginManager.FindWz("Skill001" + skillNodePath, WzFileNewOld[i]), PluginManager.FindWz, WzFileNewOld[i]) ??
+                        (Skill.CreateFromNode(PluginManager.FindWz("Skill002" + skillNodePath, WzFileNewOld[i]), PluginManager.FindWz, WzFileNewOld[i]) ??
+                        Skill.CreateFromNode(PluginManager.FindWz("Skill003" + skillNodePath, WzFileNewOld[i]), PluginManager.FindWz, WzFileNewOld[i])));
 
                     if (skill != null)
                     {
                         skill.Level = skill.MaxLevel;
                         skillRenderNewOld[i].Skill = skill;
-                        skillImageNewOld[i] = skillRenderNewOld[i].Render();
-                        width += skillImageNewOld[i].Width;
-                        heightNewOld[i] = skillImageNewOld[i].Height;
                     }
-                }
-
-                if (width == 0) continue;
-
-                // 툴팁 이미지 합치기
-                Bitmap resultImage = new Bitmap(width, Math.Max(heightNewOld[0], heightNewOld[1]));
-                Graphics g = Graphics.FromImage(resultImage);
-
-                if (skillImageNewOld[1] != null)
-                {
-                    if (skillImageNewOld[0] != null)
+                    else
                     {
-                        g.DrawImage(skillImageNewOld[0], skillImageNewOld[1].Width, 0);
-                        skillImageNewOld[0].Dispose();
-                        skillType = "改动";
+                        nullSkillIdx = i + 1;
                     }
-                    g.DrawImage(skillImageNewOld[1], 0, 0);
-                    skillImageNewOld[1].Dispose();
                 }
-                else
+
+                // ツールチップ画像を合わせる
+                Bitmap resultImage = null;
+                Graphics g = null;
+
+                switch (nullSkillIdx)
                 {
-                    g.DrawImage(skillImageNewOld[0], 0, 0);
-                    skillImageNewOld[0].Dispose();
-                    skillType = "添加";
+                    case 0: // change
+                        skillType = "変更";
+
+                        Bitmap ImageNew = skillRenderNewOld[0].Render(true);
+                        Bitmap ImageOld = skillRenderNewOld[1].Render(true);
+                        resultImage = new Bitmap(ImageNew.Width + ImageOld.Width, Math.Max(ImageNew.Height, ImageOld.Height));
+                        g = Graphics.FromImage(resultImage);
+
+                        g.DrawImage(ImageOld, 0, 0);
+                        g.DrawImage(ImageNew, ImageOld.Width, 0);
+                        break;
+
+                    case 1: // delete
+                        skillType = "削除";
+
+                        resultImage = skillRenderNewOld[1].Render();
+                        g = Graphics.FromImage(resultImage);
+                        break;
+
+                    case 2: // add
+                        skillType = "追加";
+
+                        resultImage = skillRenderNewOld[0].Render();
+                        g = Graphics.FromImage(resultImage);
+                        break;
+
+                    default:
+                        break;
+                }
+
+                if (resultImage == null || g == null)
+                {
+                    continue;
                 }
 
                 var skillTypeTextInfo = g.MeasureString(skillType, GearGraphics.ItemDetailFont);
                 int picH = 13;
                 GearGraphics.DrawPlainText(g, skillType, skillTypeFont, Color.FromArgb(255, 255, 255), 2, (int)Math.Ceiling(skillTypeTextInfo.Width) + 2, ref picH, 10);
 
-                string imageName = Path.Combine(skillTooltipPath, "技能_" + skillID + '[' + (ItemStringHelper.GetJobName(int.Parse(skillID) / 10000) ?? "其它") + "]_" + skillType + ".png");
+                string imageName = Path.Combine(skillTooltipPath, "スキル_" + skillID + '[' + (ItemStringHelper.GetJobName(int.Parse(skillID) / 10000) ?? "その他") + "]_" + skillName + "_" + skillType + ".png");
                 if (!File.Exists(imageName))
                 {
                     resultImage.Save(imageName, System.Drawing.Imaging.ImageFormat.Png);
@@ -819,18 +859,15 @@ namespace WzComparerR2.Comparer
                             fileName = ToHexString(MD5Hash(fileName));
                             // TODO: save file name mapping to another file?
                         }
-                        else if (Environment.OSVersion.Platform == PlatformID.Win32NT && fileName.Length + suffix.Length > 255)
-                        {
-                            // force hashing if the file name too long.
-                            // TODO: also need to check full file path, we have tested that all existing browsers on Windows cannot load
-                            //       local files with excessively long path.
-                            fileName = ToHexString(MD5Hash(fileName));
-                        }
                         else
                         {
                             for (int i = 0; i < invalidChars.Length; i++)
                             {
                                 fileName = fileName.Replace(invalidChars[i], '_');
+                            }
+                            if (outputDir.Length + fileName.Length > 240)
+                            {
+                                fileName = fileName.Substring(0, 40) + "_" + ToHexString(MD5Hash(fileName)).Substring(0, 8);
                             }
                         }
 
@@ -948,6 +985,13 @@ namespace WzComparerR2.Comparer
                 hex.AppendFormat("{0:x2}", b);
             }
             return hex.ToString();
+        }
+
+        private static string RemoveInvalidFileNameChars(string fileName)
+        {
+            string invalidChars = new string(System.IO.Path.GetInvalidFileNameChars());
+            string regexPattern = $"[{Regex.Escape(invalidChars)}]";
+            return Regex.Replace(fileName, regexPattern, "_");
         }
     }
 }

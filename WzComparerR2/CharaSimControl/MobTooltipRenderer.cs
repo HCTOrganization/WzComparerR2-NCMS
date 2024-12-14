@@ -35,6 +35,7 @@ namespace WzComparerR2.CharaSimControl
 
             Bitmap bmp = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(bmp);
+            bool isTranslateRequired = Translator.IsTranslateEnabled;
 
             //预绘制
             List<TextBlock> titleBlocks = new List<TextBlock>();
@@ -163,12 +164,8 @@ namespace WzComparerR2.CharaSimControl
             }
             propBlocks.Add(PrepareText(g, "物理ダメージ: " + ToCJKNumberExpr(MobInfo.PADamage), GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
             propBlocks.Add(PrepareText(g, "魔法ダメージ: " + ToCJKNumberExpr(MobInfo.MADamage), GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            //propBlocks.Add(PrepareText(g, "Physical Defense: " + MobInfo.PDDamage), GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            //propBlocks.Add(PrepareText(g, "Magic Defense: " + MobInfo.MDDamage), GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
             propBlocks.Add(PrepareText(g, "物理防御率: " + MobInfo.PDRate + "%", GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
             propBlocks.Add(PrepareText(g, "魔法防御率: " + MobInfo.MDRate + "%", GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            //propBlocks.Add(PrepareText(g, "Accuracy: " + MobInfo.Acc, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16)); //no longer used
-            //propBlocks.Add(PrepareText(g, "Avoidability: " + MobInfo.Eva, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16)); //no longer used
             propBlocks.Add(PrepareText(g, "ノックバック: " + ToCJKNumberExpr(MobInfo.Pushed), GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
             propBlocks.Add(PrepareText(g, "経験値: " + ToCJKNumberExpr(MobInfo.Exp), GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
             if (MobInfo.CharismaEXP > 0)
@@ -309,12 +306,20 @@ namespace WzComparerR2.CharaSimControl
 
         private string GetMobName(int mobID)
         {
+            bool isTranslateRequired = Translator.IsTranslateEnabled;
             StringResult sr;
             if (this.StringLinker == null || !this.StringLinker.StringMob.TryGetValue(mobID, out sr))
             {
                 return null;
             }
-            return sr.Name;
+            if (isTranslateRequired)
+            {
+                return Translator.MergeString(sr.Name, Translator.TranslateString(sr.Name, true), 0, false, true);
+            }
+            else
+            {
+                return sr.Name;
+            }
         }
 
         private string GetElemAttrString(MobElemAttr elemAttr)
@@ -381,6 +386,7 @@ namespace WzComparerR2.CharaSimControl
         private static string ToCJKNumberExpr(long value)
         {
             var sb = new StringBuilder(32);
+            string secondPart = value.ToString("N0");
             bool firstPart = true;
             if (value >= 1_0000_0000_0000_0000)
             {
@@ -419,7 +425,7 @@ namespace WzComparerR2.CharaSimControl
                 sb.AppendFormat("{0}", value);
             }
 
-            return sb.Length > 0 ? sb.ToString() : "0";
+            return sb.Length > 0 ? sb.ToString() + " (" + secondPart + ")" : "0";
         }
     }
 }

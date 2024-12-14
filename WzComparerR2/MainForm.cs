@@ -27,6 +27,8 @@ using WzComparerR2.Rendering;
 using WzComparerR2.Config;
 using WzComparerR2.Animation;
 using static Microsoft.Xna.Framework.MathHelper;
+using Microsoft.Win32;
+using SharpDX;
 
 namespace WzComparerR2
 {
@@ -35,9 +37,10 @@ namespace WzComparerR2
         public MainForm()
         {
             InitializeComponent();
+            this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
 #if NET6_0_OR_GREATER
             // https://learn.microsoft.com/en-us/dotnet/core/compatibility/fx-core#controldefaultfont-changed-to-segoe-ui-9pt
-            this.Font = new Font(new FontFamily("SimSun"), 9f);
+            this.Font = new Font(new FontFamily("MS Gothic"), 9f);
 #endif
             Form.CheckForIllegalCrossThreadCalls = false;
             this.MinimumSize = new Size(600, 450);
@@ -94,7 +97,7 @@ namespace WzComparerR2
             charaSimCtrl.UIEquip.Visible = false;
             charaSimCtrl.UIEquip.VisibleChanged += new EventHandler(afrm_VisibleChanged);
 
-            string[] images = new string[] { "dir", "mp3", "num", "png", "str", "uol", "vector", "img", "rawdata", "convex" };
+            string[] images = new string[] { "dir", "mp3", "num", "png", "str", "uol", "vector", "img", "rawdata", "convex", "video" };
             foreach (string img in images)
             {
                 imageList1.Images.Add(img, (Image)Properties.Resources.ResourceManager.GetObject(img));
@@ -203,6 +206,8 @@ namespace WzComparerR2
             UpdateCharaSimSettings();
             //wz加载配置
             UpdateWzLoadingSettings();
+            //Translator Configuration Load
+            UpdateTranslateSettings();
 
             //杂项配置
             labelItemAutoSaveFolder.Text = ImageHandlerConfig.Default.AutoSavePictureFolder;
@@ -220,6 +225,8 @@ namespace WzComparerR2
         {
             var Setting = CharaSimConfig.Default;
             this.buttonItemAutoQuickView.Checked = Setting.AutoQuickView;
+            tooltipQuickView.PreferredStringCopyMethod = Setting.PreferredStringCopyMethod;
+            tooltipQuickView.CopyParsedSkillString = Setting.CopyParsedSkillString;
             tooltipQuickView.SkillRender.ShowProperties = Setting.Skill.ShowProperties;
             tooltipQuickView.SkillRender.ShowObjectID = Setting.Skill.ShowID;
             tooltipQuickView.SkillRender.ShowDelay = Setting.Skill.ShowDelay;
@@ -232,11 +239,17 @@ namespace WzComparerR2
             tooltipQuickView.GearRender.ShowSpeed = Setting.Gear.ShowWeaponSpeed;
             tooltipQuickView.GearRender.ShowLevelOrSealed = Setting.Gear.ShowLevelOrSealed;
             tooltipQuickView.GearRender.ShowMedalTag = Setting.Gear.ShowMedalTag;
+            tooltipQuickView.GearRender.ShowSoldPrice = Setting.Gear.ShowSoldPrice;
+            tooltipQuickView.GearRender.ShowCashPurchasePrice = Setting.Gear.ShowCashPurchasePrice;
+            tooltipQuickView.GearRender.ShowCombatPower = Setting.Gear.ShowCombatPower;
+            tooltipQuickView.GearRender.AutoTitleWrap = Setting.Gear.AutoTitleWrap;
             tooltipQuickView.ItemRender.ShowObjectID = Setting.Item.ShowID;
             tooltipQuickView.ItemRender.LinkRecipeInfo = Setting.Item.LinkRecipeInfo;
             tooltipQuickView.ItemRender.LinkRecipeItem = Setting.Item.LinkRecipeItem;
             tooltipQuickView.ItemRender.ShowLevelOrSealed = Setting.Gear.ShowLevelOrSealed;
             tooltipQuickView.ItemRender.ShowNickTag = Setting.Item.ShowNickTag;
+            tooltipQuickView.ItemRender.ShowSoldPrice = Setting.Item.ShowSoldPrice;
+            tooltipQuickView.ItemRender.ShowCashPurchasePrice = Setting.Item.ShowCashPurchasePrice;
             tooltipQuickView.RecipeRender.ShowObjectID = Setting.Recipe.ShowID;
         }
 
@@ -256,6 +269,20 @@ namespace WzComparerR2
             Wz_Structure.DefaultAutoDetectExtFiles = config.AutoDetectExtFiles;
             Wz_Structure.DefaultImgCheckDisabled = config.ImgCheckDisabled;
             Wz_Structure.DefaultWzVersionVerifyMode = config.WzVersionVerifyMode;
+        }
+
+        void UpdateTranslateSettings()
+        {
+            var config = WcR2Config.Default;
+            Translator.DefaultDesiredLanguage = config.DesiredLanguage;
+            Translator.DefaultMozhiBackend = config.MozhiBackend;
+            Translator.DefaultPreferredTranslateEngine = config.PreferredTranslateEngine;
+            Translator.DefaultTranslateAPIKey = config.NxSecretKey;
+            Translator.DefaultPreferredLayout = config.PreferredLayout;
+            Translator.IsTranslateEnabled = (config.PreferredLayout > 0);
+            Translator.DefaultDetectCurrency = config.DetectCurrency;
+            Translator.DefaultDesiredCurrency = config.DesiredCurrency;
+            Translator.ExchangeTable = null;
         }
 
         void CharaSimLoader_WzFileFinding(object sender, FindWzEventArgs e)
@@ -281,6 +308,10 @@ namespace WzComparerR2
                     {
                         if (wz_f.Type == e.WzType)
                         {
+                            if (e.HasChildNodes && wz_f.Node.Nodes.Count <= 0)
+                            {
+                                continue;
+                            }
                             preSearch.Add(wz_f.Node);
                             find = true;
                             //e.WzFile = wz_f;
@@ -581,6 +612,84 @@ namespace WzComparerR2
             this.pictureBoxEx1.PictureName = aniName;
         }
 
+        private void buttonItemGif2_Click(object sender, EventArgs e)
+        {
+            // code from buttonItemGif_Click()
+            if (advTree3.SelectedNode == null)
+                return;
+
+            Wz_Node node = advTree3.SelectedNode.AsWzNode();
+            string aniName = "중첩_" + GetSelectedNodeImageName();
+
+            if (node.Value is Wz_Png)
+            {
+                var pngFrameData = this.pictureBoxEx1.LoadPngFrameAnimation(node);
+
+                if (pngFrameData != null)
+                {
+                    this.pictureBoxEx1.ShowOverlayAnimation(pngFrameData, true);
+                    this.cmbItemAniNames.Items.Clear();
+                    this.cmbItemSkins.Visible = false;
+                    this.pictureBoxEx1.PictureName = aniName;
+                }
+
+                return;
+            }
+
+            //添加到动画控件
+            if (node.Text.EndsWith(".atlas", StringComparison.OrdinalIgnoreCase))
+            {
+                /*
+                var spineData = this.pictureBoxEx1.LoadSpineAnimation(node);
+                if (spineData != null)
+                {
+                    this.pictureBoxEx1.ShowAnimation(spineData);
+                    var aniItem = this.pictureBoxEx1.Items[0] as Animation.SpineAnimator;
+                    this.cmbItemAniNames.Items.Clear();
+                    this.cmbItemAniNames.Items.Add("");
+                    this.cmbItemAniNames.Items.AddRange(aniItem.Animations.ToArray());
+                    this.cmbItemAniNames.SelectedIndex = 0;
+                    this.cmbItemSkins.Visible = true;
+                    this.cmbItemSkins.Items.Clear();
+                    this.cmbItemSkins.Items.AddRange(aniItem.Skins.ToArray());
+                    this.cmbItemSkins.SelectedIndex = aniItem.Skins.IndexOf(aniItem.SelectedSkin);
+                }
+                */
+                MessageBoxEx.Show("Spine 애니메이션은 중첩시킬 수 없습니다.", "미지원");
+                return;
+            }
+            else
+            {
+                var frameData = this.pictureBoxEx1.LoadFrameAnimation(node);
+
+                if (frameData != null)
+                {
+                    this.pictureBoxEx1.ShowOverlayAnimation(frameData);
+                    this.cmbItemAniNames.Items.Clear();
+                    this.cmbItemSkins.Visible = false;
+                    this.pictureBoxEx1.PictureName = aniName;
+                }
+                else
+                {
+                    var multiData = this.pictureBoxEx1.LoadMultiFrameAnimation(node);
+
+                    if (multiData != null)
+                    {
+                        /*
+                        this.pictureBoxEx1.ShowAnimation(multiData);
+                        var aniItem = this.pictureBoxEx1.Items[0] as Animation.MultiFrameAnimator;
+                        this.cmbItemAniNames.Items.Clear();
+                        this.cmbItemAniNames.Items.AddRange(aniItem.Animations.ToArray());
+                        this.cmbItemAniNames.SelectedIndex = 0;
+                        */
+                        MessageBoxEx.Show("Multi 프레임 애니메이션은 중첩시킬 수 없습니다.", "미지원");
+                        return;
+                    }
+                }
+            }
+            //this.pictureBoxEx1.PictureName = aniName;
+        }
+
         private string GetSelectedNodeImageName()
         {
             Wz_Node node = advTree3.SelectedNode.AsWzNode();
@@ -618,6 +727,23 @@ namespace WzComparerR2
             }
         }
 
+        private void buttonDisableOverlayAni_Click(object sender, EventArgs e)
+        {
+            if (this.pictureBoxEx1.ShowOverlayAni)
+            {
+                this.pictureBoxEx1.ShowOverlayAni = false;
+                this.pictureBoxEx1.Items.Clear();
+            }
+        }
+
+        private void buttonOverlayRect_Click(object sender, EventArgs e)
+        {
+            if (this.pictureBoxEx1.ShowOverlayAni)
+            {
+                this.pictureBoxEx1.AddOverlayRect();
+            }
+        }
+
         private void buttonItemAutoSave_Click(object sender, EventArgs e)
         {
             ConfigManager.Reload();
@@ -629,7 +755,7 @@ namespace WzComparerR2
         {
             using (FolderBrowserDialog dlg = new FolderBrowserDialog())
             {
-                dlg.Description = "Select a destination folder to automatically save images in.";
+                dlg.Description = "画像を自動的に保存する保存先フォルダを選択します。";
                 dlg.SelectedPath = ImageHandlerConfig.Default.AutoSavePictureFolder;
                 if (DialogResult.OK == dlg.ShowDialog())
                 {
@@ -677,7 +803,7 @@ namespace WzComparerR2
                 else
                 {
                     var dlg = new SaveFileDialog();
-                    dlg.Filter = "PNG (*.png)|*.png|All Files (*.*)|*.*";
+                    dlg.Filter = "PNG (*.png)|*.png|すべてのファイル (*.*)|*.*";
                     dlg.FileName = pngFileName;
                     if (dlg.ShowDialog() != DialogResult.OK)
                     {
@@ -691,11 +817,48 @@ namespace WzComparerR2
                 {
                     bmp.Save(pngFileName, System.Drawing.Imaging.ImageFormat.Png);
                 }
-                labelItemStatus.Text = "Image saved: " + pngFileName;
+                labelItemStatus.Text = "保存された画像: " + pngFileName;
+            }
+            else if (pictureBoxEx1.ShowOverlayAni && frame.Texture != null) // 애니메이션 중첩
+            {
+                var config = ImageHandlerConfig.Default;
+                string pngFileName = pictureBoxEx1.PictureName + ".png";
+
+                if (config.AutoSaveEnabled)
+                {
+                    pngFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", pngFileName.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.None)));
+                }
+                else
+                {
+                    var dlg = new SaveFileDialog();
+                    dlg.Filter = "PNG (*.png)|*.png|すべてのファイル (*.*)|*.*";
+                    dlg.FileName = pngFileName;
+                    if (dlg.ShowDialog() != DialogResult.OK)
+                    {
+                        return;
+                    }
+
+                    pngFileName = dlg.FileName;
+                }
+
+                byte[] frameData = new byte[frame.Texture.Width * frame.Texture.Height * 4];
+                frame.Texture.GetData(frameData);
+                var targetSize = new System.Drawing.Point(frame.Texture.Width, frame.Texture.Height);
+                unsafe
+                {
+                    fixed (byte* pFrameBuffer = frameData)
+                    {
+                        using (var bmp = new System.Drawing.Bitmap(targetSize.X, targetSize.Y, targetSize.X * 4, System.Drawing.Imaging.PixelFormat.Format32bppArgb, new IntPtr(pFrameBuffer)))
+                        {
+                            bmp.Save(pngFileName, System.Drawing.Imaging.ImageFormat.Png);
+                        }
+                    }
+                }
+                labelItemStatus.Text = "保存された画像: " + pngFileName;
             }
             else
             {
-                labelItemStatus.Text = "Failed to save the image.";
+                labelItemStatus.Text = "画像の保存に失敗しました。";
             }
         }
 
@@ -725,7 +888,7 @@ namespace WzComparerR2
             {
                 var dlg = new SaveFileDialog();
 
-                dlg.Filter = string.Format("{0} (*{1})|*{1}|All Files (*.*)|*.*", encParams.FileDescription, encParams.FileExtension);
+                dlg.Filter = string.Format("{0} (*{1})|*{1}|すべてのファイル (*.*)|*.*", encParams.FileDescription, encParams.FileExtension);
                 dlg.FileName = aniFileName;
 
                 if (dlg.ShowDialog() != DialogResult.OK)
@@ -738,7 +901,7 @@ namespace WzComparerR2
             var clonedAniItem = (AnimationItem)aniItem.Clone();
             if (this.pictureBoxEx1.SaveAsGif(clonedAniItem, aniFileName, config, options))
             {
-                labelItemStatus.Text = "Image saved: " + aniFileName;
+                labelItemStatus.Text = "保存された画像: " + aniFileName;
             }
         }
         #endregion
@@ -748,8 +911,8 @@ namespace WzComparerR2
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
-                dlg.Title = "请选择冒险岛WZ文件";
-                dlg.Filter = "Base.wz|*.wz";
+                dlg.Title = "WZファイルを選択";
+                dlg.Filter = "メイプルストーリーリソースファイル (Base.wz; *.wz; *.ms)|*.wz;*.ms";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     openWz(dlg.FileName);
@@ -765,7 +928,7 @@ namespace WzComparerR2
                 {
                     if (string.Compare(wz_f.Header.FileName, wzFilePath, true) == 0)
                     {
-                        MessageBoxEx.Show("此 WZ 文件已打开。", "错误");
+                        MessageBoxEx.Show("このWZファイルはすでに開かれています。", "エラー");
                         return;
                     }
                 }
@@ -776,9 +939,24 @@ namespace WzComparerR2
             advTree1.BeginUpdate();
             try
             {
-                if (wz.IsKMST1125WzFormat(wzFilePath))
+                if (string.Equals(Path.GetExtension(wzFilePath), ".ms", StringComparison.OrdinalIgnoreCase))
+                {
+                    wz.LoadMsFile(wzFilePath);
+                }
+                else if (wz.IsKMST1125WzFormat(wzFilePath))
                 {
                     wz.LoadKMST1125DataWz(wzFilePath);
+                    if (string.Equals(Path.GetFileName(wzFilePath), "Base.wz", StringComparison.OrdinalIgnoreCase))
+                    {
+                        string packsDir = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(wzFilePath)), "Packs");
+                        if (Directory.Exists(packsDir))
+                        {
+                            foreach (var msFile in Directory.GetFiles(packsDir, "*.ms"))
+                            {
+                                wz.LoadMsFile(msFile);
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -795,7 +973,7 @@ namespace WzComparerR2
                 this.openedWz.Add(wz);
                 OnWzOpened(new WzStructureEventArgs(wz)); //触发事件
                 QueryPerformance.End();
-                labelItemStatus.Text = "文件已加载。已用时间:" + (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000) + "毫秒," + wz.img_number + " IMG";
+                labelItemStatus.Text = "ファイルがロードされました。 時間が経過した：" + (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000) + "ミリ秒、" + wz.img_number + " IMG";
 
                 ConfigManager.Reload();
                 WcR2Config.Default.RecentDocuments.Remove(wzFilePath);
@@ -805,11 +983,11 @@ namespace WzComparerR2
             }
             catch (FileNotFoundException)
             {
-                MessageBoxEx.Show("找不到文件。", "错误");
+                MessageBoxEx.Show("ファイルが見つかりません。", "エラー");
             }
             catch (Exception ex)
             {
-                MessageBoxEx.Show(ex.ToString(), "错误");
+                MessageBoxEx.Show(ex.ToString(), "エラー");
                 wz.Clear();
             }
             finally
@@ -822,8 +1000,8 @@ namespace WzComparerR2
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
-                dlg.Title = "请选择冒险岛 IMG 文件。";
-                dlg.Filter = "*.img;Data.wz (Minor 小幅更新文件)|*.img;Data.wz|*.wz|*.wz";
+                dlg.Title = "メイプルストーリーIMGファイルを選択してください。";
+                dlg.Filter = "*.img;Data.wz (マイナー修正ファイル)|*.img;Data.wz|*.wz|*.wz";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     openImg(dlg.FileName);
@@ -839,7 +1017,7 @@ namespace WzComparerR2
                 {
                     if (StringComparer.OrdinalIgnoreCase.Equals(wz_f.Header.FileName, imgFileName))
                     {
-                        MessageBoxEx.Show("此 WZ 文件已打开。", "错误");
+                        MessageBoxEx.Show("このWZファイルはすでに開かれています。", "エラー");
                         return;
                     }
                 }
@@ -858,7 +1036,7 @@ namespace WzComparerR2
                 this.openedWz.Add(wz);
                 OnWzOpened(new WzStructureEventArgs(wz)); //触发事件
                 sw.Stop();
-                labelItemStatus.Text = $"IMG文件已加载。已用时间: {sw.ElapsedMilliseconds}毫秒";
+                labelItemStatus.Text = $"IMGファイルを開きました。 時間が経過した：{sw.ElapsedMilliseconds}ミリ秒";
                 refreshRecentDocItems();
             }
             catch (FileNotFoundException)
@@ -1032,7 +1210,7 @@ namespace WzComparerR2
             else if (selectedNode.Value is Wz_File wzFile)
             {
                 listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "ファイル名", wzFile.Header.FileName }));
-                listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "ファイルサイズ", wzFile.Header.FileSize + " bytes" }));
+                listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "ファイルサイズ", wzFile.Header.FileSize + " バイト" }));
                 listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "著作権", wzFile.Header.Copyright }));
                 listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "バージョン", wzFile.GetMergedVersion().ToString() }));
                 listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "WZタイプ", wzFile.IsSubDir ? "Subdirectory" : wzFile.Type.ToString() }));
@@ -1041,7 +1219,7 @@ namespace WzComparerR2
                 {
                     listViewExWzDetail.Items.Add(" ");
                     listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "ファイル名", subFile.Header.FileName }));
-                    listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "ファイルサイズ", subFile.Header.FileSize + " bytes" }));
+                    listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "ファイルサイズ", subFile.Header.FileSize + " バイト" }));
                     listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "著作権", subFile.Header.Copyright }));
                     listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "バージョン", subFile.Header.WzVersion.ToString() }));
                 }
@@ -1051,8 +1229,8 @@ namespace WzComparerR2
             else if (selectedNode.Value is Wz_Image wzImage)
             {
                 listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "IMG名", wzImage.Name }));
-                listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "IMGサイズ", wzImage.Size + " bytes" }));
-                listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "IMGオフセット", wzImage.Offset + " bytes" }));
+                listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "IMGサイズ", wzImage.Size + " バイト" }));
+                listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "IMGオフセット", wzImage.Offset + " バイト" }));
                 listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "パス", wzImage.Node.FullPathToFile }));
                 listViewExWzDetail.Items.Add(new ListViewItem(new string[] { "チェックサム", wzImage.Checksum.ToString() }));
                 autoResizeColumns(listViewExWzDetail);
@@ -1164,6 +1342,9 @@ namespace WzComparerR2
                 case Wz_Convex convex:
                     return $"convex [{convex.Points.Length}]";
 
+                case Wz_Video video:
+                    return $"video {video.Length}";
+
                 default:
                     string cellVal = Convert.ToString(value);
                     if (cellVal != null && cellVal.Length > 50)
@@ -1187,6 +1368,7 @@ namespace WzComparerR2
                 Wz_Image => "img",
                 Wz_RawData => "rawdata",
                 Wz_Convex => "convex",
+                Wz_Video => "video",
                 _ => null
             };
         }
@@ -1216,10 +1398,10 @@ namespace WzComparerR2
                     pictureBoxEx1.ShowImage(png);
                     this.cmbItemAniNames.Items.Clear();
                     advTree3.PathSeparator = ".";
-                    textBoxX1.Text = "dataLength: " + png.DataLength + " bytes\r\n" +
-                        "offset: " + png.Offset + "\r\n" +
-                        "size: " + png.Width + "*" + png.Height + "\r\n" +
-                        "png format: " + png.Form;
+                    textBoxX1.Text = "データ長:  " + png.DataLength + " バイト\r\n" +
+                        "オフセット:  " + png.Offset + "\r\n" +
+                        "サイズ:  " + png.Width + "*" + png.Height + "\r\n" +
+                        "PNG形式:  " + png.Form;
 
                     var sourceNode = selectedNode.GetLinkedSourceNode(PluginManager.FindWz);
                     if (sourceNode != selectedNode)
@@ -1238,10 +1420,10 @@ namespace WzComparerR2
                             pictureBoxEx1.ShowImage(png);
                             this.cmbItemAniNames.Items.Clear();
                             advTree3.PathSeparator = ".";
-                            textBoxX1.AppendText("\r\n\r\ndataLength: " + png.DataLength + " bytes\r\n" +
-                                "offset: " + png.Offset + "\r\n" +
-                                "size: " + png.Width + "*" + png.Height + "\r\n" +
-                                "png format: " + png.Form);
+                            textBoxX1.AppendText("\r\n\r\nデータ長:  " + png.DataLength + " バイト\r\n" +
+                                "オフセット:  " + png.Offset + "\r\n" +
+                                "サイズ:  " + png.Width + "*" + png.Height + "\r\n" +
+                                "PNG形式:  " + png.Form);
                         }
                     }
                     break;
@@ -1267,12 +1449,12 @@ namespace WzComparerR2
 
                 case Wz_Sound sound:
                     preLoadSound(sound, selectedNode.Text);
-                    textBoxX1.Text = "dataLength: " + sound.DataLength + " bytes\r\n" +
-                        "offset: " + sound.Offset + "\r\n" +
-                        "time: " + sound.Ms + " ms\r\n" +
-                        "headerLength: " + (sound.Header == null ? 0 : sound.Header.Length) + " bytes\r\n" +
-                        "freq: " + sound.Frequency + " Hz\r\n" +
-                        "type: " + sound.SoundType.ToString();
+                    textBoxX1.Text = "データ長:  " + sound.DataLength + " バイト\r\n" +
+                        "オフセット:  " + sound.Offset + "\r\n" +
+                        "長さ: " + sound.Ms + " ms\r\n" +
+                        "チャンネル: " + sound.Channels + "\r\n" +
+                        "周波数: " + sound.Frequency + " Hz\r\n" +
+                        "タイプ: " + sound.SoundType.ToString();
                     break;
 
                 case Wz_Image:
@@ -1280,9 +1462,15 @@ namespace WzComparerR2
                     break;
 
                 case Wz_RawData rawData:
-                    textBoxX1.Text = "dataLength: " + rawData.Length + " bytes\r\n" +
-                        "offset: " + rawData.Offset;
+                    textBoxX1.Text = "データ長:  " + rawData.Length + " バイト\r\n" +
+                        "オフセット:  " + rawData.Offset;
                     break;
+
+                case Wz_Video video:
+                    textBoxX1.Text = "データ長:  " + video.Length + " バイ\r\n" +
+                        "オフセット:  " + video.Offset;
+                    break;
+
 
                 default:
                     string valueStr = Convert.ToString(selectedNode.Value);
@@ -1310,10 +1498,10 @@ namespace WzComparerR2
                                         pictureBoxEx1.ShowImage(png);
                                         this.cmbItemAniNames.Items.Clear();
                                         advTree3.PathSeparator = ".";
-                                        textBoxX1.AppendText("\r\n\r\ndataLength: " + png.DataLength + " bytes\r\n" +
-                                        "offset: " + png.Offset + "\r\n" +
-                                        "size: " + png.Width + "*" + png.Height + "\r\n" +
-                                            "png format: " + png.Form);
+                                        textBoxX1.AppendText("\r\n\r\nデータ長:  " + png.DataLength + " バイト\r\n" +
+                                        "オフセット:  " + png.Offset + "\r\n" +
+                                        "サイズ:  " + png.Width + "*" + png.Height + "\r\n" +
+                                            "PNG形式:  " + png.Form);
                                     }
                                 }
                             }
@@ -1386,7 +1574,7 @@ namespace WzComparerR2
                 {
                     foreach (var wzf in wzs.wz_files)
                     {
-                        if (wzf.Type == wzType)
+                        if (wzf.Type == wzType && wzf.OwnerWzFile == null)
                         {
                             allWzFile.Add(wzf.Node);
                         }
@@ -1413,9 +1601,9 @@ namespace WzComparerR2
             }
             else
             {
-                path = "(" + objPathList.Count + ") node(s)";
+                path = "(" + objPathList.Count + ") ノード";
             }
-            labelItemStatus.Text = "Failed to find imageNode: " + path;
+            labelItemStatus.Text = "画像ノードが見つかりませんでした: " + path;
         }
 
         private Wz_Node SearchNode(Wz_Node parent, string[] path, int startIndex)
@@ -1529,7 +1717,7 @@ namespace WzComparerR2
             }
             sb.Remove(sb.Length - 1, 1);
             Clipboard.SetText(sb.ToString(), TextDataFormat.UnicodeText);
-            labelItemStatus.Text = "Copied to clipboard.";
+            labelItemStatus.Text = "クリップボードにコピーされました。";
         }
 
         private List<string[]> detectObjPathByStringPath(string id, string stringNodePath)
@@ -1774,11 +1962,11 @@ namespace WzComparerR2
                     sw.Stop();
                 }
                 GC.Collect();
-                labelItemStatus.Text = $"Sorted in {sw.ElapsedMilliseconds} ms";
+                labelItemStatus.Text = $"{sw.ElapsedMilliseconds}ミリ秒でソートされました。";
             }
             else
             {
-                labelItemStatus.Text = "Failed to sort: There is no WZ file open";
+                labelItemStatus.Text = "並べ替えに失敗しました: WZ ファイルが開かれませんでした。";
             }
         }
 
@@ -1787,7 +1975,7 @@ namespace WzComparerR2
             Wz_Image img = advTree1.SelectedNode?.AsWzNode()?.GetValue<Wz_Image>();
             if (img == null)
             {
-                MessageBoxEx.Show("Select an IMG to export.");
+                MessageBoxEx.Show("エクスポートする IMG を選択します。");
                 return;
             }
             SaveFileDialog dlg = new SaveFileDialog();
@@ -1800,28 +1988,16 @@ namespace WzComparerR2
                 try
                 {
                     fs = new FileStream(dlg.FileName, FileMode.Create, FileAccess.Write);
-                    FileStream fsWz = img.WzFile.FileStream;
-                    fsWz.Seek(img.Offset, SeekOrigin.Begin);
-                    byte[] buffer = new byte[2048];
-                    int count, size = img.Size;
-                    while (size > 0 &&
-                        (count = fsWz.Read(buffer, 0, Math.Min(size, buffer.Length))) > 0)
-                    {
-                        fs.Write(buffer, 0, count);
-                        size -= count;
-                    }
-                    labelItemStatus.Text = "Exported: " + img.Name;
+                    var s = img.OpenRead();
+                    s.Position = 0;
+                    s.CopyTo(fs);
+                    fs.Close();
+                    labelItemStatus.Text = "エクスポートされた: " + img.Name;
                 }
                 catch (Exception ex)
                 {
+                    fs?.Close();
                     MessageBoxEx.Show(ex.ToString(), "エラー");
-                }
-                finally
-                {
-                    if (fs != null)
-                    {
-                        fs.Close();
-                    }
                 }
             }
         }
@@ -1831,7 +2007,7 @@ namespace WzComparerR2
             Wz_Image img = advTree1.SelectedNode?.AsWzNode()?.GetValue<Wz_Image>();
             if (img == null)
             {
-                MessageBoxEx.Show("Select an IMG to export.");
+                MessageBoxEx.Show("エクスポートする XML を選択します。");
                 return;
             }
             SaveFileDialog dlg = new SaveFileDialog();
@@ -1859,7 +2035,7 @@ namespace WzComparerR2
                     writer.WriteEndDocument();
                     writer.Close();
 
-                    labelItemStatus.Text = "Exported: " + img.Name + "to XML.";
+                    labelItemStatus.Text = "エクスポートされた: " + img.Name + "を XML として";
                 }
                 catch (Exception ex)
                 {
@@ -1873,6 +2049,29 @@ namespace WzComparerR2
                     }
                 }
             }
+        }
+
+        private void tsmi1CopyString_Click(object sender, EventArgs e)
+        {
+            Wz_Image img = advTree1.SelectedNode?.AsWzNode()?.GetValue<Wz_Image>();
+            if (img == null)
+            {
+                MessageBoxEx.Show("エクスポートする IMG を選択します。");
+                return;
+            }
+            Wz_File wzf = advTree1.SelectedNode.AsWzNode().GetNodeWzFile();
+            switch (wzf.Type)
+            {
+                case Wz_Type.Character:
+                case Wz_Type.Item:
+                case Wz_Type.Map:
+                case Wz_Type.Mob:
+                case Wz_Type.Npc:
+                case Wz_Type.Skill:
+                default:
+                    break;
+            }
+
         }
         #endregion
 
@@ -2108,7 +2307,7 @@ namespace WzComparerR2
             {
                 foreach (Wz_File file in wz.wz_files)
                 {
-                    if (file.Type == Wz_Type.String)
+                    if (file.Type == Wz_Type.String && file.Node.Nodes.Count > 0)
                     {
                         return file;
                     }
@@ -2123,7 +2322,7 @@ namespace WzComparerR2
             {
                 foreach (Wz_File file in wz.wz_files)
                 {
-                    if (file.Type == Wz_Type.Item)
+                    if (file.Type == Wz_Type.Item && file.Node.Nodes.Count > 0)
                     {
                         return file;
                     }
@@ -2138,7 +2337,7 @@ namespace WzComparerR2
             {
                 foreach (Wz_File file in wz.wz_files)
                 {
-                    if (file.Type == Wz_Type.Etc)
+                    if (file.Type == Wz_Type.Etc && file.Node.Nodes.Count > 0)
                     {
                         return file;
                     }
@@ -2242,9 +2441,89 @@ namespace WzComparerR2
                     return;
                 }
             }
+            if (!WcR2Config.Default.NoPatcherPrompt)
+            {
+                DialogResult PatcherPromptResult = MessageBoxEx.Show("このゲームパッチャーは、JMSのV427アップデート以降は動作しません。\r\n" +
+                "JMSを更新するには、「ゲームをダウンロード」をクリックして、\r\n" +
+                "プロンプトが表示されたらゲームをインストールした場所を選択し、\r\n" +
+                "「ゲームスタート」ボタンをクリックしてゲームを更新してプレイしてください。\r\n" +
+                "JMS以外の公式キノコゲームクライアントにパッチを適用する場合は、この通知を無視しても問題ありません。\r\n\r\n" +
+                "「OK」をクリックすると、この通知は再度表示されなくなります。", "注意", MessageBoxButtons.OKCancel);
+                if (PatcherPromptResult == System.Windows.Forms.DialogResult.OK)
+                {
+                    ConfigManager.Reload();
+                    WcR2Config.Default.NoPatcherPrompt = true;
+                    ConfigManager.Save();
+                }
+            }
             FrmPatcher patcher = new FrmPatcher();
+            var config = WcR2Config.Default;
+            var defaultEnc = config?.WzEncoding?.Value ?? 0;
+            if (defaultEnc != 0)
+            {
+                patcher.PatcherNoticeEncoding = Encoding.GetEncoding(defaultEnc);
+            }
             patcher.Owner = this;
             patcher.Show();
+        }
+
+        private void buttonInstallGame_Click(object sender, EventArgs e)
+        {
+            if (!IsUriSchemeRegistered("ngm"))
+            {
+                ngmInstallPrompt();
+                return;
+            }
+            else
+            {
+                #if NET6_0_OR_GREATER
+                Process.Start(new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = "ngm://launch/ -mode:install -game:'16785939@bb01'",
+                });
+                #else
+                Process.Start("ngm://launch/ -mode:install -game:'16785939@bb01'");
+                #endif
+            }
+        }
+
+        private void buttonGameStart_Click(object sender, EventArgs e)
+        {
+            if (!IsUriSchemeRegistered("ngm"))
+            {
+                ngmInstallPrompt();
+                return;
+            }
+            else
+            {
+                #if NET6_0_OR_GREATER
+                Process.Start(new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = "ngm://launch/ -mode:launch -game:'16785939@bb01'",
+                });
+                #else
+                Process.Start("ngm://launch/ -mode:launch -game:'16785939@bb01'");
+                #endif
+            }
+        }
+
+        private void ngmInstallPrompt()
+        {
+            DialogResult ngmresult = MessageBoxEx.Show("ゲームをダウンロードまたは起動するには Nexon Game Manager が必要ですが、\r\nインストールされていないようです。\r\n\r\nダウンロードしてインストールしますか?", "確認", MessageBoxButtons.YesNo);
+            if (ngmresult == DialogResult.Yes)
+            {
+#if NET6_0_OR_GREATER
+                Process.Start(new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = "https://platform.nexon.com/NGM/Bin/Install_NGM.exe",
+                });
+#else
+                Process.Start("https://platform.nexon.com/NGM/Bin/Install_NGM.exe");
+                #endif
+            }
         }
         #endregion
 
@@ -2262,7 +2541,7 @@ namespace WzComparerR2
             switch (sound.SoundType)
             {
                 case Wz_SoundType.Mp3: soundName += ".mp3"; break;
-                case Wz_SoundType.WavRaw: soundName += ".wav"; break;
+                case Wz_SoundType.Pcm: soundName += ".wav"; break;
             }
             soundPlayer.PlayingSoundName = soundName;
             labelItemSoundTitle.Tooltip = soundName;
@@ -2284,14 +2563,14 @@ namespace WzComparerR2
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
                 List<string> supportExt = new List<string>();
-                supportExt.Add("Audio File (*.mp3;*.ogg;*.wav)|*.mp3;*.ogg;*.wav");
+                supportExt.Add("オーディオファイル (*.mp3;*.ogg;*.wav)|*.mp3;*.ogg;*.wav");
                 foreach (string ext in this.soundPlayer.GetPluginSupportedExt())
                 {
                     supportExt.Add(ext);
                 }
-                supportExt.Add("All Files (*.*)|*.*");
+                supportExt.Add("すべてのファイル (*.*)|*.*");
 
-                dlg.Title = "Select Audio File";
+                dlg.Title = "オーディオファイルを選択";
                 dlg.Filter = string.Join("|", supportExt.ToArray());
                 dlg.Multiselect = false;
 
@@ -2340,8 +2619,8 @@ namespace WzComparerR2
             using (SaveFileDialog dlg = new SaveFileDialog())
             {
                 dlg.AddExtension = true;
-                dlg.Title = "Save As";
-                dlg.Filter = "MP3 File (*.mp3)|*.mp3|WAV File (*.wav)|*.wav|OGG File (*.ogg)|*.ogg|All Files (*.*)|*.*";
+                dlg.Title = "名前を付けて保存";
+                dlg.Filter = "MP3 (*.mp3)|*.mp3|WAV File (*.wav)|*.wav|OGG File (*.ogg)|*.ogg|すべてのファイル (*.*)|*.*";
                 dlg.AddExtension = false;
                 dlg.FileName = soundPlayer.PlayingSoundName;
                 if (dlg.ShowDialog() == DialogResult.OK)
@@ -2352,11 +2631,11 @@ namespace WzComparerR2
                         fs = new FileStream(dlg.FileName, FileMode.Create);
                         fs.Write(data, 0, data.Length);
 
-                        MessageBoxEx.Show("Saved");
+                        MessageBoxEx.Show("ファイルを保存しました。");
                     }
                     catch (Exception ex)
                     {
-                        MessageBoxEx.Show("Failed to save\r\n\r\n" + ex.ToString(), "エラー");
+                        MessageBoxEx.Show("ファイルの保存に失敗しました。\r\n\r\n" + ex.ToString(), "エラー");
                     }
                     finally
                     {
@@ -2414,7 +2693,7 @@ namespace WzComparerR2
             CustomSoundFile soundFile = new CustomSoundFile(fileName, 0, (int)(new FileInfo(fileName).Length));
             soundPlayer.PreLoad(soundFile);
             soundPlayer.PlayingSoundName = Path.GetFileName(fileName);
-            labelItemSoundTitle.Text = "(External File) " + soundPlayer.PlayingSoundName;
+            labelItemSoundTitle.Text = "(外部ファイル) " + soundPlayer.PlayingSoundName;
             labelItemSoundTitle.Tooltip = fileName;
         }
         #endregion
@@ -2435,7 +2714,7 @@ namespace WzComparerR2
                 {
                     dlg.FileName += ".txt";
                 }
-                dlg.Filter = "All Files (*.*)|*.*";
+                dlg.Filter = "すべてのファイル (*.*)|*.*";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -2449,47 +2728,35 @@ namespace WzComparerR2
                     }
                 }
             }
-            else if (item is Wz_Sound wzSound)
+            else if (item is IMapleStoryBlob blob)
             {
                 SaveFileDialog dlg = new SaveFileDialog();
                 dlg.FileName = advTree3.SelectedNode.Text;
-                if (!dlg.FileName.Contains("."))
+                if (!dlg.FileName.Contains(".") && blob is Wz_Sound wzSound)
                 {
                     switch (wzSound.SoundType)
                     {
                         case Wz_SoundType.Mp3: dlg.FileName += ".mp3"; break;
-                        case Wz_SoundType.WavRaw: dlg.FileName += ".wav"; break;
+                        case Wz_SoundType.Pcm: dlg.FileName += ".pcm"; break;
                     }
                 }
-                dlg.Filter = "All Files (*.*)|*.*";
+                dlg.Filter = "すべてのファイル (*.*)|*.*";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
+                        byte[] data = new byte[blob.Length];
+                        blob.CopyTo(data, 0);
                         using (var f = File.Create(dlg.FileName))
                         {
-                            wzSound.WzFile.FileStream.Seek(wzSound.Offset, SeekOrigin.Begin);
-                            byte[] buffer = new byte[4096];
-                            int bytes = wzSound.DataLength;
-                            while (bytes > 0)
-                            {
-                                int count = wzSound.WzFile.FileStream.Read(buffer, 0, Math.Min(buffer.Length, bytes));
-                                if (count > 0)
-                                {
-                                    f.Write(buffer, 0, count);
-                                    bytes -= count;
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
+                            f.Write(data, 0, data.Length);
+                            f.Flush();
                         }
-                        this.labelItemStatus.Text = "Saved";
+                        this.labelItemStatus.Text = "ファイルを保存しました";
                     }
                     catch (Exception ex)
                     {
-                        MessageBoxEx.Show("Failed to save\r\n" + ex.ToString(), "エラー");
+                        MessageBoxEx.Show("保存に失敗しました\r\n" + ex.ToString(), "エラー");
                     }
                 }
             }
@@ -2497,7 +2764,7 @@ namespace WzComparerR2
             {
                 SaveFileDialog dlg = new SaveFileDialog();
                 dlg.FileName = advTree3.SelectedNode.Text;
-                dlg.Filter = "All Files (*.*)|*.*";
+                dlg.Filter = "すべてのファイル (*.*)|*.*";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -2521,11 +2788,11 @@ namespace WzComparerR2
                                 }
                             }
                         }
-                        this.labelItemStatus.Text = "Saved";
+                        this.labelItemStatus.Text = "ファイルを保存しました";
                     }
                     catch (Exception ex)
                     {
-                        MessageBoxEx.Show("Failed to save\r\n" + ex.ToString(), "エラー");
+                        MessageBoxEx.Show("保存に失敗しました\r\n" + ex.ToString(), "エラー");
                     }
                 }
             }
@@ -2536,14 +2803,14 @@ namespace WzComparerR2
             Wz_Uol uol = advTree3.SelectedNode?.AsWzNode()?.Value as Wz_Uol;
             if (uol == null)
             {
-                labelItemStatus.Text = "You have not selected an UOL node.";
+                labelItemStatus.Text = "UOLノードが選択されていません。";
                 return;
             }
 
             Node uolNode = handleUol(advTree3.SelectedNode, uol.Uol);
             if (uolNode == null)
             {
-                labelItemStatus.Text = "The targeted UOL node was not found.";
+                labelItemStatus.Text = "対象のUOLノードが見つかりませんでした。";
                 return;
             }
             else
@@ -2706,7 +2973,7 @@ namespace WzComparerR2
             tsmi2HandleUol.Visible = false;
             if (node != null)
             {
-                if (node.Value is Wz_Sound || node.Value is Wz_Png || node.Value is string || node.Value is Wz_RawData)
+                if (node.Value is Wz_Sound || node.Value is Wz_Png || node.Value is string || node.Value is Wz_RawData || node.Value is Wz_Video)
                 {
                     tsmi2SaveAs.Visible = true;
                     tsmi2SaveAs.Enabled = true;
@@ -2769,7 +3036,7 @@ namespace WzComparerR2
             Wz_File wzf = selectedNode.GetNodeWzFile();
             if (wzf == null)
             {
-                labelItemStatus.Text = "The WZ file where the node belongs to has not been found.";
+                labelItemStatus.Text = "ノードが属するWZファイルが見つかりません。";
                 return;
             }
 
@@ -2780,6 +3047,8 @@ namespace WzComparerR2
 
             object obj = null;
             string fileName = null;
+
+            StringResult sr = new StringResult();
             switch (wzf.Type)
             {
                 case Wz_Type.Character:
@@ -2790,9 +3059,15 @@ namespace WzComparerR2
                     CharaSimLoader.LoadCommoditiesIfEmpty();
                     var gear = Gear.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = gear;
+                    if (stringLinker == null || !stringLinker.StringEqp.TryGetValue(gear.ItemID, out sr))
+                    {
+                        sr = new StringResult();
+                        sr.Name = "未知の装備";
+                    }
                     if (gear != null)
                     {
-                        fileName = gear.ItemID + ".png";
+                        fileName = "eqp_" + gear.ItemID + "_" + RemoveInvalidFileNameChars(sr.Name) + ".png";
+                        tooltipQuickView.NodeID = gear.ItemID;
                     }
                     break;
                 case Wz_Type.Item:
@@ -2802,9 +3077,15 @@ namespace WzComparerR2
                     {
                         var item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
                         obj = item;
+                        if (stringLinker == null || !stringLinker.StringItem.TryGetValue(item.ItemID, out sr))
+                        {
+                            sr = new StringResult();
+                            sr.Name = "未知のアイテム";
+                        }
                         if (item != null)
                         {
-                            fileName = item.ItemID + ".png";
+                            fileName = "item_" + item.ItemID + "_" + RemoveInvalidFileNameChars(sr.Name) + ".png";
+                            tooltipQuickView.NodeID = item.ItemID;
                         }
                     }
                     else if (Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\Pet\\\d{7}.img"))
@@ -2817,9 +3098,15 @@ namespace WzComparerR2
                             return;
                         var item = Item.CreateFromNode(image.Node, PluginManager.FindWz);
                         obj = item;
+                        if (stringLinker == null || !stringLinker.StringItem.TryGetValue(item.ItemID, out sr))
+                        {
+                            sr = new StringResult();
+                            sr.Name = "未知のペット";
+                        }
                         if (item != null)
                         {
-                            fileName = item.ItemID + ".png";
+                            fileName = "pet_" + item.ItemID + "_" + RemoveInvalidFileNameChars(sr.Name) + ".png";
+                            tooltipQuickView.NodeID = item.ItemID;
                         }
                     }
 
@@ -2831,14 +3118,25 @@ namespace WzComparerR2
                     {
                         Recipe recipe = Recipe.CreateFromNode(skillNode);
                         obj = recipe;
+                        if (stringLinker == null || !stringLinker.StringSkill.TryGetValue(recipe.RecipeID, out sr))
+                        {
+                            sr = new StringResultSkill();
+                            sr.Name = "未知のレシピ";
+                        }
                         if (recipe != null)
                         {
-                            fileName = "recipe_" + recipe.RecipeID + ".png";
+                            fileName = "recipe_" + recipe.RecipeID + "_" + RemoveInvalidFileNameChars(sr.Name) + ".png";
+                            tooltipQuickView.NodeID = recipe.RecipeID;
                         }
                     }
                     else if (Regex.IsMatch(skillNode.FullPathToFile, @"^Skill\d*\\\d+.img\\skill\\\d+$"))
                     {
                         Skill skill = Skill.CreateFromNode(skillNode, PluginManager.FindWz);
+                        if (stringLinker == null || !stringLinker.StringSkill.TryGetValue(skill.SkillID, out sr))
+                        {
+                            sr = new StringResultSkill();
+                            sr.Name = "未知のスキル";
+                        }
                         if (skill != null)
                         {
                             switch (this.skillDefaultLevel)
@@ -2849,7 +3147,8 @@ namespace WzComparerR2
                                 case DefaultLevel.LevelMaxWithCO: skill.Level = skill.MaxLevel + 2; break;
                             }
                             obj = skill;
-                            fileName = "skill_" + skill.SkillID + ".png";
+                            fileName = "skill_" + skill.SkillID + "_" + RemoveInvalidFileNameChars(sr.Name) + ".png";
+                            tooltipQuickView.NodeID = skill.SkillID;
                         }
                     }
                     break;
@@ -2859,9 +3158,15 @@ namespace WzComparerR2
                         return;
                     var mob = Mob.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = mob;
+                    if (stringLinker == null || !stringLinker.StringMob.TryGetValue(mob.ID, out sr))
+                    {
+                        sr = new StringResult();
+                        sr.Name = "未知のモンスター";
+                    }
                     if (mob != null)
                     {
-                        fileName = mob.ID + ".png";
+                        fileName = "mob_" + mob.ID + "_" + RemoveInvalidFileNameChars(sr.Name) + ".png";
+                        tooltipQuickView.NodeID = mob.ID;
                     }
                     break;
 
@@ -2870,9 +3175,15 @@ namespace WzComparerR2
                         return;
                     var npc = Npc.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = npc;
+                    if (stringLinker == null || !stringLinker.StringNpc.TryGetValue(npc.ID, out sr))
+                    {
+                        sr = new StringResult();
+                        sr.Name = "未知のNPC";
+                    }
                     if (npc != null)
                     {
-                        fileName = npc.ID + ".png";
+                        fileName = "npc_" + npc.ID + "_" + RemoveInvalidFileNameChars(sr.Name) + ".png";
+                        tooltipQuickView.NodeID = npc.ID;
                     }
                     break;
 
@@ -2885,9 +3196,15 @@ namespace WzComparerR2
                         if (!CharaSimLoader.LoadedSetItems.TryGetValue(Convert.ToInt32(selectedNode.Text), out setItem))
                             return;
                         obj = setItem;
+                        if (stringLinker == null || !stringLinker.StringSetItem.TryGetValue(setItem.SetItemID, out sr))
+                        {
+                            sr = new StringResult();
+                            sr.Name = "未知のセット";
+                        }
                         if (setItem != null)
                         {
-                            fileName = setItem.SetItemID + ".png";
+                            fileName = "set_" + setItem.SetItemID + "_" + RemoveInvalidFileNameChars(sr.Name) + ".png";
+                            tooltipQuickView.NodeID = setItem.SetItemID;
                         }
                     }
                     break;
@@ -2896,6 +3213,12 @@ namespace WzComparerR2
             {
                 tooltipQuickView.TargetItem = obj;
                 tooltipQuickView.ImageFileName = fileName;
+                tooltipQuickView.NodeName = sr.Name;
+                tooltipQuickView.Desc = sr.Desc;
+                tooltipQuickView.Pdesc = sr.Pdesc;
+                tooltipQuickView.AutoDesc = sr.AutoDesc;
+                tooltipQuickView.Hdesc = sr["h"];
+                tooltipQuickView.DescLeftAlign = sr["desc_leftalign"];
                 tooltipQuickView.Refresh();
                 tooltipQuickView.HideOnHover = false;
                 tooltipQuickView.Show();
@@ -2908,7 +3231,7 @@ namespace WzComparerR2
 
             if (item != null)
             {
-                GearGraphics.SetFontFamily("SimSun");
+                GearGraphics.SetFontFamily("MS Gothic");
                 ConfigManager.Reload();
                 CharaSimConfig.Default.SelectedFontIndex = comboBoxItemLanguage.SelectedIndex;
                 ConfigManager.Save();
@@ -3180,27 +3503,29 @@ namespace WzComparerR2
         {
             if (compareThread != null)
             {
-                compareThread.Suspend();
-                if (DialogResult.Yes == MessageBoxEx.Show("比较正在进行中。是否要中断？", "Notice", MessageBoxButtons.YesNoCancel))
+                // compareThread.Suspend();
+                if (DialogResult.Yes == MessageBoxEx.Show("比較が進行中です。 中絶しますか?", "注意", MessageBoxButtons.YesNoCancel))
                 {
-                    compareThread.Resume();
+                    // compareThread.Resume();
                     compareThread.Interrupt();
+                    compareThread = null;
+                    GC.Collect();
                 }
                 else
                 {
-                    compareThread.Resume();
+                    // compareThread.Resume();
                 }
                 return;
             }
 
             if (openedWz.Count < 2)
             {
-                MessageBoxEx.Show("请打开两个或多个WZ文件开始比较。", "错误");
+                MessageBoxEx.Show("比較を開始するには、2つ以上のWZファイルを開いてください。", "エラー");
                 return;
             }
 
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "选择对比报告目标文件夹。";
+            dlg.Description = "保存先のフォルダーを選択します。";
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -3225,7 +3550,7 @@ namespace WzComparerR2
 
                         while (true)
                         {
-                            string txt = string.Format("WZ 文件:\r\n\r\n 新版本: {0} (V{1})\r\n 旧版本: {2} (V{3})\r\n\r\n单击“Yes”开始比较，单击“No”交换版本号。",
+                            string txt = string.Format("WZファイル:\r\n\r\n  新しいバージョン: {0} (V{1})\r\n  古いバージョン: {2} (V{3})\r\n\r\n「Yes」をクリックして比較を開始します。 古いバージョンと新しいバージョンを交換するには、「No」をクリックします。",
                                 fileNew.Header.FileName,
                                 fileNew.GetMergedVersion(),
                                 fileOld.Header.FileName,
@@ -3252,17 +3577,17 @@ namespace WzComparerR2
                     }
                     catch (ThreadAbortException)
                     {
-                        MessageBoxEx.Show(this, "对比过程已终止。", "错误");
+                        MessageBoxEx.Show(this, "比較は一時停止されました。", "エラー");
                     }
                     catch (Exception ex)
                     {
-                        MessageBoxEx.Show(this, "对比过程已终止。" + ex.ToString(), "错误");
+                        MessageBoxEx.Show(this, "比較は一時停止されました。" + ex.ToString(), "エラー");
                     }
                     finally
                     {
                         sw.Stop();
                         compareThread = null;
-                        labelXComp1.Text = "比较完成。经过时间:" + sw.Elapsed.ToString();
+                        labelXComp1.Text = "比較が完了しました。 時間が経過した：" + sw.Elapsed.ToString();
                         labelXComp2.Text = "";
                     }
                 });
@@ -3297,7 +3622,7 @@ namespace WzComparerR2
         private void btnExportSkill_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "选择目标文件夹。";
+            dlg.Description = "エクスポート先のフォルダーを選択します。";
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
@@ -3313,14 +3638,14 @@ namespace WzComparerR2
                     sw.Close();
                     fs.Dispose();
                 }
-                MessageBoxEx.Show("导出完成。");
+                MessageBoxEx.Show("エクスポート完了。");
             }
         }
 
         private void btnExportSkillOption_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "选择目标文件夹。";
+            dlg.Description = "エクスポート先のフォルダーを選択します。";
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
@@ -3328,7 +3653,7 @@ namespace WzComparerR2
 
                 DBConnection conn = new DBConnection(this.stringLinker);
                 conn.ExportSkillOption(dlg.SelectedPath);
-                MessageBoxEx.Show("导出完成。");
+                MessageBoxEx.Show("エクスポート完了。");
             }
         }
 
@@ -3377,10 +3702,10 @@ namespace WzComparerR2
             Process.Start(new ProcessStartInfo
             {
                 UseShellExecute = true,
-                FileName = "https://github.com/HCTOrganization/WzComparerR2-NCMS/releases",
+                FileName = "https://github.com/HikariCalyx/WzComparerR2-JMS/releases",
             });
 #else
-            Process.Start("https://github.com/HCTOrganization/WzComparerR2-NCMS/releases");
+            Process.Start("https://github.com/HikariCalyx/WzComparerR2-JMS/releases");
 #endif
         }
 
@@ -3394,7 +3719,66 @@ namespace WzComparerR2
                 frm.Save(WcR2Config.Default);
                 ConfigManager.Save();
                 UpdateWzLoadingSettings();
+                UpdateTranslateSettings();
             }
+        }
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form is FrmPatcher && !form.IsDisposed)
+                {
+                    form.Show();
+                    form.BringToFront();
+                    MessageBoxEx.Show("終了する前にゲームパッチャーを閉じてください。", "注意", MessageBoxButtons.OK);
+                    e.Cancel = true;
+                    return;
+                }
+            }
+            if (compareThread != null)
+            {
+                if (DialogResult.Yes == MessageBoxEx.Show("比較が進行中です。 中絶しますか?", "注意", MessageBoxButtons.YesNo))
+                {
+                    compareThread.Interrupt();
+                    compareThread = null;
+                    GC.Collect();
+                    e.Cancel = true;
+                    return;
+                }
+                else
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+            DialogResult result = MessageBoxEx.Show("終了しますか?", "確認", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                e.Cancel = false;  //点击OK
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void buttomItem13_FormClosing(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private static bool IsUriSchemeRegistered(string scheme)
+        {
+            string registryKey = $@"HKEY_CLASSES_ROOT\{scheme}";
+            object keyValue = Registry.GetValue(registryKey, "", null);
+            return keyValue != null;
+        }
+
+        private static string RemoveInvalidFileNameChars(string fileName)
+        {
+            string invalidChars = new string(System.IO.Path.GetInvalidFileNameChars());
+            string regexPattern = $"[{Regex.Escape(invalidChars)}]";
+            return Regex.Replace(fileName, regexPattern, "_");
         }
     }
 

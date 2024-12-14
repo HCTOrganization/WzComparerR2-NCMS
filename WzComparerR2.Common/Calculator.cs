@@ -9,7 +9,7 @@ namespace WzComparerR2
     {
         public static decimal Parse(string mathExpression, params decimal[] args)
         {
-            var tokens = Lexer(mathExpression);
+            var tokens = Lexer(ExcessiveBracketFilter(mathExpression));
             var inst = Suffix(tokens);
 
             var paramList = new Dictionary<string, object>();
@@ -20,7 +20,7 @@ namespace WzComparerR2
                 {
                     switch (i)
                     {
-                        case 0: paramList["x"] = args[0]; break;
+                        case 0: paramList["x"] = args[0]; paramList["X"] = args[0]; break;
                         case 1: paramList["y"] = args[1]; break;
                         case 2: paramList["z"] = args[2]; break;
                         case 3: paramList["w"] = args[3]; break;
@@ -30,7 +30,29 @@ namespace WzComparerR2
 
             return Execute(inst, new EvalContext(paramList));
         }
-
+        public static string ExcessiveBracketFilter(string expression)
+        {
+            int leftBracketQuantity = System.Text.RegularExpressions.Regex.Matches(expression, "[(]").Count;
+            int rightBracketQuantity = System.Text.RegularExpressions.Regex.Matches(expression, "[)]").Count;
+            int bracketQuantityDelta = rightBracketQuantity - leftBracketQuantity;
+            if (bracketQuantityDelta > 0)
+            {
+                while (bracketQuantityDelta > 0)
+                {
+                    expression = expression.Remove(expression.LastIndexOf(")"));
+                    bracketQuantityDelta--;
+                }
+            }
+            else if (bracketQuantityDelta < 0)
+            {
+                while (bracketQuantityDelta < 0)
+                {
+                    expression += ")";
+                    bracketQuantityDelta++;
+                }
+            }
+            return expression;
+        }
         private static List<Token> Lexer(string expr)
         {
             var tokens = new List<Token>();
@@ -347,7 +369,12 @@ namespace WzComparerR2
                     value = (Func<decimal, decimal>)Math.Floor;
                     return true;
                 }
-                else if ((m = Regex.Match(key, @"log(\d+)")).Success)
+                else if (key == "min")
+                {
+                    value = (Func<decimal, decimal, decimal>)Math.Min;
+                    return true;
+                }
+                else if ((m = Regex.Match(key, @"^log(\d+)$")).Success)
                 {
                     var logBase = int.Parse(m.Result("$1"));
                     value = (Func<decimal, decimal>)(x => x <= 0 ? 0 : (decimal)Math.Floor(Math.Log(decimal.ToDouble(x), logBase)));

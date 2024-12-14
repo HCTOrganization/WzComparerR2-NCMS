@@ -24,6 +24,7 @@ namespace WzComparerR2
         public FrmPatcher()
         {
             InitializeComponent();
+            this.FormClosing += new FormClosingEventHandler(FrmPatcher_FormClosing);
 #if NET6_0_OR_GREATER
             // https://learn.microsoft.com/en-us/dotnet/core/compatibility/fx-core#controldefaultfont-changed-to-segoe-ui-9pt
             this.Font = new Font(new FontFamily("SimSun"), 9f);
@@ -58,6 +59,8 @@ namespace WzComparerR2
             }
             cmbComparePng.SelectedItem = WzPngComparison.SizeAndDataLength;
         }
+        
+        public Encoding PatcherNoticeEncoding { get; set; }
 
         Thread patchThread;
         EventWaitHandle waitHandle;
@@ -211,7 +214,7 @@ namespace WzComparerR2
         {
             if (patchThread != null && patchThread.IsAlive)
             {
-                patchThread.Interrupt();
+                patchThread = null;
             }
             ConfigManager.Reload();
             WcR2Config.Default.PatcherSettings.Clear();
@@ -284,6 +287,15 @@ namespace WzComparerR2
             prePatch = chkPrePatch.Checked;
             deadPatch = chkDeadPatch.Checked;
 
+            if (!File.Exists(msFolder + "//MapleStory.exe") && !File.Exists(msFolder + "//MapleStoryT.exe"))
+            {
+                DialogResult PatcherPromptResult = MessageBoxEx.Show("選択したフォルダは有効なメイプルフォルダではないようです。\r\nそれでも続行しますか?", "警告", MessageBoxButtons.YesNo);
+                if (PatcherPromptResult == System.Windows.Forms.DialogResult.No)
+                {
+                    return;
+                }
+            }
+
             patchThread = new Thread(() => ExecutePatch(patchFile, msFolder, prePatch));
             patchThread.Priority = ThreadPriority.Highest;
             waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
@@ -313,6 +325,7 @@ namespace WzComparerR2
             try
             {
                 patcher = new WzPatcher(patchFile);
+                patcher.NoticeEncoding = this.PatcherNoticeEncoding ?? Encoding.Default;
                 patcher.PatchingStateChanged += new EventHandler<PatchingEventArgs>(patcher_PatchingStateChanged);
                 AppendStateText($"パッチファイル名: {patchFile}\r\n");
                 AppendStateText("パッチを分析中...");
@@ -384,11 +397,11 @@ namespace WzComparerR2
             }
             catch (ThreadAbortException)
             {
-                MessageBoxEx.Show("パッチは中止されました。", "Patcher");
+                // MessageBoxEx.Show("パッチは中止されました。", "Patcher");
             }
             catch (ThreadInterruptedException)
             {
-                MessageBoxEx.Show("パッチは中止されました。", "Patcher");
+                // MessageBoxEx.Show("パッチは中止されました。", "Patcher");
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -500,77 +513,13 @@ namespace WzComparerR2
                             {
                                 tempDir = Path.GetDirectoryName(tempDir);
                             }
-                            string newWzFilePath = Path.Combine(tempDir, "Data", e.Part.WzType.ToString(), e.Part.WzType + ".wz");
-                            string oldWzFilePath = Path.Combine(msFolder, "Data", e.Part.WzType.ToString(), e.Part.WzType + ".wz");
-                            bool isNewKMST1125WzFormat = wznew.IsKMST1125WzFormat(newWzFilePath, oldWzFilePath); // TODO: check if deleted
-                            bool isOldKMST1125WzFormat = wzold.IsKMST1125WzFormat(oldWzFilePath);
-                            if (isNewKMST1125WzFormat)
-                            {
-                                wznew.LoadKMST1125DataWz(newWzFilePath, oldWzFilePath);
-                            }
-                            else
-                            {
-                                foreach (PatchPartContext part in typedParts[e.Part.WzType])
-                                {
-                                    if (part.Type != 2)
-                                    {
-                                        wznew.Load(part.TempFilePath, false);
-                                    }
-                                }
-                            }
-                            if (isOldKMST1125WzFormat)
-                            {
-                                wzold.LoadKMST1125DataWz(oldWzFilePath);
-                            }
-                            else
-                            {
-                                foreach (PatchPartContext part in ((WzPatcher)sender).PatchParts.Where(part => part.WzType == e.Part.WzType))
-                                {
-                                    if (part.Type != 0 && File.Exists(Path.Combine(msFolder, part.FileName)))
-                                    {
-                                        wzold.Load(Path.Combine(msFolder, part.FileName), false);
-                                    }
-                                }
-                            }
-                            if (sw == null)
-                            {
-                                htmlFilePath = Path.Combine(this.compareFolder, "index.html");
-
-                                htmlFile = new FileStream(htmlFilePath, FileMode.Create, FileAccess.Write);
-                                sw = new StreamWriter(htmlFile, Encoding.UTF8);
-                                sw.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-                                sw.WriteLine("<html>");
-                                sw.WriteLine("<head>");
-                                sw.WriteLine("<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">");
-                                sw.WriteLine("<title>Index {0}←{1}</title>", wznew.wz_files.Where(wz_file => wz_file != null).First().Header.WzVersion, wzold.wz_files.Where(wz_file => wz_file != null).First().Header.WzVersion);
-                                sw.WriteLine("<link type=\"text/css\" rel=\"stylesheet\" href=\"style.css\" />");
-                                sw.WriteLine("</head>");
-                                sw.WriteLine("<body>");
-                                //输出概况
-                                sw.WriteLine("<p class=\"wzf\">");
-                                sw.WriteLine("<table>");
-                                sw.WriteLine("<tr><th>Filename</th><th>Size New Version</th><th>Size Old Version</th><th>Modified</th><th>Added</th><th>Removed</th></tr>");
-                            }
-                            if (isNewKMST1125WzFormat && isOldKMST1125WzFormat)
-                            {
-                                comparer.EasyCompareWzFiles(wznew.wz_files[0], wzold.wz_files[0], this.compareFolder, sw);
-                            }
-                            else if (!isNewKMST1125WzFormat && !isOldKMST1125WzFormat)
-                            {
-                                comparer.EasyCompareWzStructures(wznew, wzold, this.compareFolder, sw);
-                            }
-                            else if (isNewKMST1125WzFormat && !isOldKMST1125WzFormat)
-                            {
-                                comparer.EasyCompareWzStructuresToWzFiles(wznew.wz_files[0], wzold, this.compareFolder, sw);
-                            }
-                            else
-                            {
-                                // TODO
-                            }
+                            wznew.Load(e.Part.TempFilePath, false);
+                            wzold.Load(e.Part.OldFilePath, false);
+                            comparer.EasyCompareWzFiles(wznew.wz_files[0], wzold.wz_files[0], this.compareFolder);
                         }
                         catch (Exception ex)
                         {
-                            AppendStateText(ex.ToString());
+                            txtPatchState.AppendText(ex.ToString());
                         }
                         finally
                         {
@@ -650,9 +599,9 @@ namespace WzComparerR2
             style.TextAlignment = eStyleTextAlignment.Far;
             switch (part.Type)
             {
-                case 0: node.Cells.Add(new Cell("Added", style)); break;
-                case 1: node.Cells.Add(new Cell("Modified", style)); break;
-                case 2: node.Cells.Add(new Cell("Removed", style)); break;
+                case 0: node.Cells.Add(new Cell("追加", style)); break;
+                case 1: node.Cells.Add(new Cell("変更", style)); break;
+                case 2: node.Cells.Add(new Cell("削除", style)); break;
                 default: node.Cells.Add(new Cell(part.Type.ToString(), style)); break;
             }
             node.Cells.Add(new Cell(part.NewFileLength.ToString("n0"), style));
@@ -697,8 +646,8 @@ namespace WzComparerR2
 > 最適化がないため、大きなファイルが生成されます。 ただし、ファイルが完全であることは保証されています。", "通知");
 
             SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Filter = "Patch File (*.patch)|*.patch";
-            dlg.Title = "Save Patch File";
+            dlg.Filter = "パッチファイル (*.patch)|*.patch";
+            dlg.Title = "パッチファイルを保存";
             dlg.CheckFileExists = false;
             dlg.InitialDirectory = Path.GetDirectoryName(txtPatchFile2.Text);
             dlg.FileName = Path.GetFileNameWithoutExtension(txtPatchFile2.Text) + "_reverse.patch";
@@ -715,6 +664,25 @@ namespace WzComparerR2
                 }
                 catch(Exception ex)
                 {
+                }
+            }
+        }
+
+        private void FrmPatcher_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (patchThread != null && patchThread.IsAlive)
+            {
+                DialogResult result = MessageBoxEx.Show("ゲームはパッチ適用中なので、パッチャー終了するとゲームデータが破損する可能性があります。\r\n\r\nそれでも終了しますか?", "確認", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    patchThread.Interrupt();
+                    patchThread = null;
+                    GC.Collect();
+                    e.Cancel = false;
+                }
+                else
+                {
+                    e.Cancel = true;
                 }
             }
         }

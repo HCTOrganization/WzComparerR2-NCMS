@@ -40,6 +40,10 @@ namespace WzComparerR2.MapRender
         public int? ReturnMap { get; set; }
         public bool HideMinimap { get; set; }
         public int FieldLimit { get; set; }
+
+        public int? Barrier { get; set; }
+        public int? BarrierArc { get; set; }
+        public int? BarrierAut { get; set; }
         public string FieldScript { get; set; }
 
         public MiniMap MiniMap { get; private set; }
@@ -178,6 +182,10 @@ namespace WzComparerR2.MapRender
             this.HideMinimap = infoNode.Nodes["hideMinimap"].GetValueEx(false);
             this.FieldLimit = infoNode.Nodes["fieldLimit"].GetValueEx(0);
             this.FieldScript = infoNode.Nodes["fieldScript"].GetValueEx<string>(null);
+
+            this.Barrier = infoNode.Nodes["barrier"].GetValueEx<int>();
+            this.BarrierArc = infoNode.Nodes["barrierArc"].GetValueEx<int>();
+            this.BarrierAut = infoNode.Nodes["barrierAut"].GetValueEx<int>();
         }
 
         private void LoadMinimap(Wz_Node miniMapNode, ResourceLoader resLoader)
@@ -229,7 +237,40 @@ namespace WzComparerR2.MapRender
                 item.Name = $"back_{node.Text}";
                 item.Index = int.Parse(node.Text);
 
-                (item.IsFront ? this.Scene.Front : this.Scene.Back).Slots.Add(item);
+                if (item.Ani == 0)
+                {
+                    string path = $@"Map\Back\_Canvas\{item.BS}.img\back\{item.No}";
+                    string path2 = $@"Map\Back\{item.BS}.img\back\{item.No}";
+                    var bNode = PluginManager.FindWz(path) ?? PluginManager.FindWz(path2);
+                    if (bNode == null)
+                    {
+                        (item.IsFront ? this.Scene.Front : this.Scene.Back).Slots.Add(item);
+                        continue;
+                    }
+                    var png = bNode.GetValue<Wz_Png>();
+                    var width = png.Width;
+                    var height = png.Height;
+                    var block_size = 4096;
+                    if (width > block_size || height > block_size)
+                    {
+                        var countx = (width / block_size) + 1;
+                        var county = (height / block_size) + 1;
+                        for (int i = 0; i < countx; i++)
+                        {
+                            for (int j = 0; j < county; j++)
+                            {
+                                var newItem = BackItem.LoadFromNode(node, i + 1, j + 1);
+                                newItem.Name = $"back_{node.Text}";
+                                newItem.Index = int.Parse(node.Text);
+                                newItem.X += block_size * i;
+                                newItem.Y += block_size * j;
+                                (newItem.IsFront ? this.Scene.Front : this.Scene.Back).Slots.Add(newItem);
+                            }
+                        }
+                    }
+                    else (item.IsFront ? this.Scene.Front : this.Scene.Back).Slots.Add(item);
+                }
+                else (item.IsFront ? this.Scene.Front : this.Scene.Back).Slots.Add(item);
             }
         }
 
@@ -666,7 +707,7 @@ namespace WzComparerR2.MapRender
                 default: throw new Exception($"Unknown back ani value: {back.Ani}.");
             }
             string path = $@"Map\Back\{back.BS}.img\{aniDir}\{back.No}";
-            var aniItem = resLoader.LoadAnimationData(path);
+            var aniItem = resLoader.LoadAnimationData(path, back.Xc, back.Yc);
 
             back.View = new BackItem.ItemView()
             {
@@ -742,6 +783,13 @@ namespace WzComparerR2.MapRender
                     var npcNode = PluginManager.FindWz(path);
 
                     //TODO: 加载npc数据
+                    life.HideName = (npcNode?.FindNodeByPath(@"info\hideName")?.GetValueEx<int>(0) ?? 0) != 0;
+                    var customFontNode = npcNode?.FindNodeByPath(@"info\customFont:func");
+                    if (customFontNode != null)
+                    {
+                        life.CustomFont = LifeItem.LoadCustomFontFunc(customFontNode);
+                    }
+
                     int? npcLink = npcNode?.FindNodeByPath(@"info\link").GetValueEx<int>();
                     if (npcLink != null)
                     {

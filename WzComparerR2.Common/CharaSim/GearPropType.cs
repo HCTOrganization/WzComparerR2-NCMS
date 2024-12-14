@@ -51,6 +51,59 @@ namespace WzComparerR2.CharaSim
         statR,
         incCHUC,
 
+        //Scroll Enhancement Stats, for NX OpenAPI only
+        scrollSTR,
+        scrollDEX,
+        scrollINT,
+        scrollLUK,
+        scrollMHP,
+        scrollMMP,
+        scrollPAD,
+        scrollMAD,
+        scrollDEF,
+        scrollSpeed,
+        scrollJump,
+
+        //Bonus Stats, for NX OpenAPI only
+        addSTR,
+        addDEX,
+        addINT,
+        addLUK,
+        addMHP,
+        addMMP,
+        addPAD,
+        addMAD,
+        addDEF,
+        addSpeed,
+        addJump,
+        addBDR,
+        addDamR,
+        addAllStatR,
+        addLvlDec,
+
+        //Star Force Stats, for NX OpenAPI only
+        starSTR,
+        starDEX,
+        starINT,
+        starLUK,
+        starMHP,
+        starMMP,
+        starPAD,
+        starMAD,
+        starDEF,
+        starSpeed,
+        starJump,
+
+        //Exceptional Stats, for NX OpenAPI only
+        exceptionalSTR,
+        exceptionalDEX,
+        exceptionalINT,
+        exceptionalLUK,
+        exceptionalMHP,
+        exceptionalMMP,
+        exceptionalPAD,
+        exceptionalMAD,
+
         //潜能属性
         incPADr = 100,
         incMADr,
@@ -140,6 +193,7 @@ namespace WzComparerR2.CharaSim
         reqJob2,
         reqPOP,
         reqSpecJob,
+        reqSpecJobs,
         reqWeekDay, //要求日子
         grade,
 
@@ -196,6 +250,11 @@ namespace WzComparerR2.CharaSim
         price,
         notSale,
         scissorAmount_wz2,
+
+        //MSN exclusive stats
+        blockUpgradeStarforce,
+        blockUpgradeExtraOption,
+        mintable,
 
         gatherTool_incSkillLevel = 2000,
         gatherTool_incSpeed,

@@ -29,11 +29,38 @@ namespace WzComparerR2.Config
             set { this["showLevelOrSealed"] = value; }
         }
 
+        [ConfigurationProperty("showSoldPrice", DefaultValue = true)]
+        public bool ShowSoldPrice
+        {
+            get { return (bool)this["showSoldPrice"]; }
+            set { this["showSoldPrice"] = value; }
+        }
+
+        [ConfigurationProperty("showCashPurchasePrice", DefaultValue = true)]
+        public bool ShowCashPurchasePrice
+        {
+            get { return (bool)this["showCashPurchasePrice"]; }
+            set { this["showCashPurchasePrice"] = value; }
+        }
+
         [ConfigurationProperty("showMedalTag", DefaultValue = false)]
         public bool ShowMedalTag
         {
             get { return (bool)this["showMedalTag"]; }
             set { this["showMedalTag"] = value; }
+        }
+
+        [ConfigurationProperty("autoTitleWrap", DefaultValue = true)]
+        public bool AutoTitleWrap
+        {
+            get { return (bool)this["autoTitleWrap"]; }
+            set { this["autoTitleWrap"] = value; }
+        }
+        [ConfigurationProperty("showCombatPower", DefaultValue = true)]
+        public bool ShowCombatPower
+        {
+            get { return (bool)this["showCombatPower"]; }
+            set { this["showCombatPower"] = value; }
         }
     }
 }
