@@ -19,7 +19,7 @@ namespace WzComparerR2
             InitializeComponent();
 #if NET6_0_OR_GREATER
             // https://learn.microsoft.com/en-us/dotnet/core/compatibility/fx-core#controldefaultfont-changed-to-segoe-ui-9pt
-            this.Font = new Font(new FontFamily("MS Gothic"), 9f);
+            this.Font = new Font(new FontFamily("SimSun"), 9f);
 #endif
 
             this.lblClrVer.Text = string.Format("{0} ({1})", Environment.Version, Environment.Is64BitProcess ? "x64" : "x86");
@@ -49,8 +49,8 @@ namespace WzComparerR2
         {
             this.advTree1.Nodes.Clear();
 
-            this.advTree1.Nodes.Add(new Node("JMS <font color=\"#808080\">v5.6.0</font>"));
-            this.advTree1.Nodes.Add(new Node("[JMS] 日本語版 <font color=\"#808080\">Hikari Calyx</font>"));
+            this.advTree1.Nodes.Add(new Node("TMS <font color=\"#808080\">v5.6.0</font>"));
+            this.advTree1.Nodes.Add(new Node("[TMS] 繁體中文版 <font color=\"#808080\">Hikari Calyx</font>"));
 
             if (PluginBase.PluginManager.LoadedPlugins.Count > 0)
             {
@@ -66,7 +66,7 @@ namespace WzComparerR2
             }
             else
             {
-                string nodeTxt = "<font color=\"#808080\">利用可能なプラグインはありません。</font>";
+                string nodeTxt = "<font color=\"#808080\">沒有可用的擴充模組</font>";
                 Node node = new Node(nodeTxt);
                 this.advTree1.Nodes.Add(node);
             }

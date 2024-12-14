@@ -25,12 +25,12 @@ namespace WzComparerR2
             InitializeComponent();
 #if NET6_0_OR_GREATER
             // https://learn.microsoft.com/en-us/dotnet/core/compatibility/fx-core#controldefaultfont-changed-to-segoe-ui-9pt
-            this.Font = new Font(new FontFamily("MS PGothic"), 9f);
+            this.Font = new Font(new FontFamily("SimSun"), 9f);
 #endif
 
             cmbWzEncoding.Items.AddRange(new[]
             {
-                new ComboItem("ｼｽﾃﾑｴﾝｺｰﾃﾞｨﾝｸﾞ"){ Value = 0 },
+                new ComboItem("系統編碼"){ Value = 0 },
                 new ComboItem("Shift-JIS (JMS)"){ Value = 932 },
                 new ComboItem("GB 2312 (CMS)"){ Value = 936 },
                 new ComboItem("EUC-KR (KMS)"){ Value = 949 },
@@ -41,18 +41,18 @@ namespace WzComparerR2
 
             cmbWzVersionVerifyMode.Items.AddRange(new[]
             {
-                new ComboItem("高速な方法"){ Value = WzLib.WzVersionVerifyMode.Fast },
-                new ComboItem("従来の方法"){ Value = WzLib.WzVersionVerifyMode.Default },
+                new ComboItem("快速"){ Value = WzLib.WzVersionVerifyMode.Fast },
+                new ComboItem("傳統"){ Value = WzLib.WzVersionVerifyMode.Default },
             });
 
             cmbDesiredLanguage.Items.AddRange(new[]
             {
-                new ComboItem("英語 (GMS/MSEA)"){ Value = "en" },
-                new ComboItem("韓国語 (KMS)"){ Value = "ko" },
-                new ComboItem("広東語 (HKMS)"){ Value = "yue" },
-                new ComboItem("簡体字中国語 (CMS)"){ Value = "zh-CN" },
-                new ComboItem("日本語 (JMS)"){ Value = "ja" },
-                new ComboItem("繁体字中国語 (TMS)"){ Value = "zh-TW" },
+                new ComboItem("繁體中文 (TMS)"){ Value = "zh-TW" },
+                new ComboItem("廣東話 (HKMS)"){ Value = "yue" },
+                new ComboItem("韓文 (KMS)"){ Value = "ko" },
+                new ComboItem("簡體中文 (CMS)"){ Value = "zh-CN" },
+                new ComboItem("日文 (JMS)"){ Value = "ja" },
+                new ComboItem("英文 (GMS/MSEA)"){ Value = "en" },
             });
 
             cmbMozhiBackend.Items.AddRange(new[]
@@ -86,38 +86,38 @@ namespace WzComparerR2
 
             cmbPreferredLayout.Items.AddRange(new[]
             {
-                new ComboItem("翻訳なし"){ Value = 0 },
-                new ComboItem("最初に訳文、次に原文"){ Value = 1 },
-                new ComboItem("最初に原文、次に訳文"){ Value = 2 },
-                new ComboItem("翻訳のみ"){ Value = 3 },
+                new ComboItem("不翻譯"){ Value = 0 },
+                new ComboItem("先譯文，后原文"){ Value = 1 },
+                new ComboItem("先原文，后譯文"){ Value = 2 },
+                new ComboItem("僅譯文"){ Value = 3 },
             });
 
             cmbDetectCurrency.Items.AddRange(new[]
             {
-                new ComboItem("自動検出"){ Value = "auto" },
-                new ComboItem("韓国ウォン (KRW)"){ Value = "krw" },
-                new ComboItem("シンガポールドル (SGD)"){ Value = "sgd" },
-                new ComboItem("台湾ドル (NTD)"){ Value = "twd" },
-                new ComboItem("中国元 (CNY)"){ Value = "cny" },
-                new ComboItem("日本円 (JPY)"){ Value = "jpy" },
-                new ComboItem("米ドル (USD)"){ Value = "usd" },
+                new ComboItem("自動判定"){ Value = "auto" },
+                new ComboItem("美元 (USD)"){ Value = "usd" },
+                new ComboItem("韓元 (KRW)"){ Value = "krw" },
+                new ComboItem("新台幣 (NTD)"){ Value = "twd" },
+                new ComboItem("新加坡元 (SGD)"){ Value = "sgd" },
+                new ComboItem("日元 (JPY)"){ Value = "jpy" },
+                new ComboItem("人民幣 (CNY)"){ Value = "cny" },
             });
 
             cmbDesiredCurrency.Items.AddRange(new[]
             {
-                new ComboItem("変換しない"){ Value = "none" },
-                new ComboItem("カナダドル (CAD)"){ Value = "cad" },
-                new ComboItem("オーストラリアドル (AUD)"){ Value = "aud" },
-                new ComboItem("韓国ウォン (KRW)"){ Value = "krw" },
-                new ComboItem("シンガポールドル (SGD)"){ Value = "sgd" },
-                new ComboItem("台湾ドル (NTD)"){ Value = "twd" },
-                new ComboItem("中国元 (CNY)"){ Value = "cny" },
-                new ComboItem("日本円 (JPY)"){ Value = "jpy" },
-                new ComboItem("米ドル (USD)"){ Value = "usd" },
-                new ComboItem("香港ドル (HKD)"){ Value = "hkd" },
-                new ComboItem("マカオパタカ (MOP)"){ Value = "mop" },
-                new ComboItem("ﾏﾚｰｼｱﾘﾝｷﾞｯﾄ (MYR)"){ Value = "myr" },
-                new ComboItem("ユーロ (EUR)"){ Value = "eur" },
+                new ComboItem("不轉換"){ Value = "none" },
+                new ComboItem("馬來西亞林吉特 (MYR)"){ Value = "myr" },
+                new ComboItem("美元 (USD)"){ Value = "usd" },
+                new ComboItem("港幣 (HKD)"){ Value = "hkd" },
+                new ComboItem("韓元 (KRW)"){ Value = "krw" },
+                new ComboItem("加幣 (CAD)"){ Value = "cad" },
+                new ComboItem("新台幣 (NTD)"){ Value = "twd" },
+                new ComboItem("新加坡元 (SGD)"){ Value = "sgd" },
+                new ComboItem("日元 (JPY)"){ Value = "jpy" },
+                new ComboItem("人民幣 (CNY)"){ Value = "cny" },
+                new ComboItem("澳幣 (AUD)"){ Value = "aud" },
+                new ComboItem("澳門元 (MOP)"){ Value = "mop" },
+                new ComboItem("歐元 (EUR)"){ Value = "eur" },
             });
         }
 

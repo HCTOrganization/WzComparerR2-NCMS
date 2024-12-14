@@ -105,7 +105,7 @@
             this.buttonX2.Size = new System.Drawing.Size(65, 23);
             this.buttonX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX2.TabIndex = 1;
-            this.buttonX2.Text = "キャンセル";
+            this.buttonX2.Text = "取消";
             // 
             // buttonX1
             // 
@@ -118,7 +118,7 @@
             this.buttonX1.Size = new System.Drawing.Size(60, 23);
             this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX1.TabIndex = 0;
-            this.buttonX1.Text = "OK";
+            this.buttonX1.Text = "確認";
             // 
             // txtAPIkey
             // 
@@ -154,7 +154,7 @@
             this.buttonXCheck.Size = new System.Drawing.Size(55, 19);
             this.buttonXCheck.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonXCheck.TabIndex = 4;
-            this.buttonXCheck.Text = "検査する";
+            this.buttonXCheck.Text = "檢查";
             this.buttonXCheck.Click += new System.EventHandler(this.buttonXCheck_Click);
             // 
             // buttonXCheck2
@@ -167,7 +167,7 @@
             this.buttonXCheck2.Size = new System.Drawing.Size(55, 19);
             this.buttonXCheck2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonXCheck2.TabIndex = 4;
-            this.buttonXCheck2.Text = "検査する";
+            this.buttonXCheck2.Text = "檢查";
             this.buttonXCheck2.Click += new System.EventHandler(this.buttonXCheck2_Click);
             // 
             // buttonXCheck3
@@ -180,7 +180,7 @@
             this.buttonXCheck3.Size = new System.Drawing.Size(55, 19);
             this.buttonXCheck3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonXCheck3.TabIndex = 4;
-            this.buttonXCheck3.Text = "検査する";
+            this.buttonXCheck3.Text = "檢查";
             this.buttonXCheck3.Click += new System.EventHandler(this.buttonXCheck3_Click);
             // 
             // superTabControl1
@@ -208,11 +208,11 @@
             this.superTabControl1.Location = new System.Drawing.Point(0, 0);
             this.superTabControl1.Name = "superTabControl1";
             this.superTabControl1.ReorderTabsEnabled = true;
-            this.superTabControl1.SelectedTabFont = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Bold);
+            this.superTabControl1.SelectedTabFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold);
             this.superTabControl1.SelectedTabIndex = 0;
             this.superTabControl1.Size = new System.Drawing.Size(400, 171);
             this.superTabControl1.TabAlignment = DevComponents.DotNetBar.eTabStripAlignment.Left;
-            this.superTabControl1.TabFont = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.superTabControl1.TabFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.superTabControl1.TabIndex = 4;
             this.superTabControl1.Tabs.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.superTabItem1,
@@ -405,7 +405,7 @@
             this.labelX5.Location = new System.Drawing.Point(14, 15);
             this.labelX5.Name = "labelX5";
             this.labelX5.TabIndex = 9;
-            this.labelX5.Text = "Mozhiサーバー";
+            this.labelX5.Text = "Mozhi伺服器";
             // 
             // labelX7
             // 
@@ -418,7 +418,7 @@
             this.labelX7.Location = new System.Drawing.Point(14, 42);
             this.labelX7.Name = "labelX7";
             this.labelX7.TabIndex = 9;
-            this.labelX7.Text = "翻訳エンジン";
+            this.labelX7.Text = "翻譯引擎";
             // 
             // labelX8
             // 
@@ -431,7 +431,7 @@
             this.labelX8.Location = new System.Drawing.Point(14, 69);
             this.labelX8.Name = "labelX8";
             this.labelX8.TabIndex = 9;
-            this.labelX8.Text = "訳文表示";
+            this.labelX8.Text = "翻譯顯示類型";
             // 
             // labelX6
             // 
@@ -445,7 +445,7 @@
             this.labelX6.Name = "labelX6";
             this.labelX6.Size = new System.Drawing.Size(131, 16);
             this.labelX6.TabIndex = 7;
-            this.labelX6.Text = "ご希望の言語";
+            this.labelX6.Text = "所需語言";
             // 
             // labelX9
             // 
@@ -458,7 +458,7 @@
             this.labelX9.Location = new System.Drawing.Point(14, 123);
             this.labelX9.Name = "labelX9";
             this.labelX9.TabIndex = 9;
-            this.labelX9.Text = "ポイント単位";
+            this.labelX9.Text = "點數單位";
             // 
             // labelX10
             // 
@@ -471,7 +471,7 @@
             this.labelX10.Location = new System.Drawing.Point(14, 150);
             this.labelX10.Name = "labelX10";
             this.labelX10.TabIndex = 9;
-            this.labelX10.Text = "ご希望の単位";
+            this.labelX10.Text = "所需單位";
             // 
             // cmbDesiredLanguage
             // 
@@ -562,7 +562,7 @@
             this.superTabItem2.AttachedControl = this.superTabControlPanel2;
             this.superTabItem2.GlobalItem = false;
             this.superTabItem2.Name = "superTabItem2";
-            this.superTabItem2.Text = "翻訳機能";
+            this.superTabItem2.Text = "翻譯功能";
             // 
             // superTabControlPanel3
             // 
@@ -591,7 +591,7 @@
             this.labelX4.Location = new System.Drawing.Point(14, 42);
             this.labelX4.Name = "labelX4";
             this.labelX4.TabIndex = 9;
-            this.labelX4.Text = "翻訳APIキー (JSON形式)";
+            this.labelX4.Text = "翻譯API金鑰（JSON 格式）";
             // 
             // txtSecretkey
             // 
@@ -600,7 +600,7 @@
             this.txtSecretkey.Location = new System.Drawing.Point(14, 67);
             this.txtSecretkey.Name = "txtSecretkey";
             this.txtSecretkey.Multiline = true;
-            this.txtSecretkey.Font = new System.Drawing.Font("MS Gothic", 9F);
+            this.txtSecretkey.Font = new System.Drawing.Font("SimSun", 9F);
             this.txtSecretkey.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtSecretkey.Size = new System.Drawing.Size(306, 90);
             this.txtSecretkey.TabIndex = 10;
@@ -610,7 +610,7 @@
             this.superTabItem3.AttachedControl = this.superTabControlPanel3;
             this.superTabItem3.GlobalItem = false;
             this.superTabItem3.Name = "superTabItem3";
-            this.superTabItem3.Text = "APIキー";
+            this.superTabItem3.Text = "API金鑰";
             // 
             // FrmOptions
             // 
@@ -620,7 +620,7 @@
             this.Controls.Add(this.superTabControl1);
             this.Controls.Add(this.panelEx1);
             this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("MS PGothic", 9F);
+            this.Font = new System.Drawing.Font("SimSun", 9F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "FrmOptions";

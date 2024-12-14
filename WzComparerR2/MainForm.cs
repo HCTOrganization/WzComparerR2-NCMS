@@ -40,7 +40,7 @@ namespace WzComparerR2
             this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
 #if NET6_0_OR_GREATER
             // https://learn.microsoft.com/en-us/dotnet/core/compatibility/fx-core#controldefaultfont-changed-to-segoe-ui-9pt
-            this.Font = new Font(new FontFamily("MS Gothic"), 9f);
+            this.Font = new Font(new FontFamily("SimSun"), 9f);
 #endif
             Form.CheckForIllegalCrossThreadCalls = false;
             this.MinimumSize = new Size(600, 450);
@@ -2511,7 +2511,7 @@ namespace WzComparerR2
 
         private void ngmInstallPrompt()
         {
-            DialogResult ngmresult = MessageBoxEx.Show("ゲームをダウンロードまたは起動するには Nexon Game Manager が必要ですが、\r\nインストールされていないようです。\r\n\r\nダウンロードしてインストールしますか?", "確認", MessageBoxButtons.YesNo);
+            DialogResult ngmresult = MessageBoxEx.Show("使用此功能需要安裝 Nexon Game Manager ，但您似乎未安裝。\r\n\r\n需要幫助您下載安裝嗎?", "確認", MessageBoxButtons.YesNo);
             if (ngmresult == DialogResult.Yes)
             {
 #if NET6_0_OR_GREATER
@@ -3751,7 +3751,7 @@ namespace WzComparerR2
                     return;
                 }
             }
-            DialogResult result = MessageBoxEx.Show("終了しますか?", "確認", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBoxEx.Show("是否確認退出?", "確認", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 e.Cancel = false;  //点击OK
