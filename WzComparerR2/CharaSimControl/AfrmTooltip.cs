@@ -15,10 +15,10 @@ namespace WzComparerR2.CharaSimControl
         public AfrmTooltip()
         {
             this.menu = new ContextMenuStrip();
-            this.menu.Items.Add(new ToolStripMenuItem("クリップボードにコピー", null, tsmiCopy_Click));
-            this.menu.Items.Add(new ToolStripMenuItem("PNGに保存", null, tsmiSave_Click));
-            this.menu.Items.Add(new ToolStripMenuItem("文字列をコピー", null, tsmiCopyText_Click));
-            this.menu.Items.Add(new ToolStripMenuItem("閉じる (Esc)", null, tsmiClose_Click));
+            this.menu.Items.Add(new ToolStripMenuItem("複製到剪貼簿", null, tsmiCopy_Click));
+            this.menu.Items.Add(new ToolStripMenuItem("儲存為PNG", null, tsmiSave_Click));
+            this.menu.Items.Add(new ToolStripMenuItem("複製字串", null, tsmiCopyText_Click));
+            this.menu.Items.Add(new ToolStripMenuItem("關閉 (Esc)", null, tsmiClose_Click));
             this.ContextMenuStrip = this.menu;
 
             this.Size = new Size(1, 1);
